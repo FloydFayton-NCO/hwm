@@ -1,0 +1,83 @@
+#!/bin/sh
+set -xa
+
+export PS4='$SECONDS + '
+date -u
+
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+[[ -d $DATA ]] && rm -rf $DATA
+mkdir -p $DATA
+cd $DATA
+
+#make directories for combine search and intermediate files
+mkdir -p $DATA/live_${rescount}_finaltxt
+mkdir -p $DATA/live_${rescount}_finaljson
+mkdir -p $DATA/daily_${rescount}_finaltxt
+mkdir -p $DATA/daily_${rescount}_finaljson
+mkdir -p $DATA/nwges_${rescount}01
+mkdir -p $DATA/nwges_${rescount}02
+
+#Set PDY and YPDYHHMM to search COMIN/COMOUT for combine
+export PDY=$(date +"%Y%m%d")
+export PDYHHMM="$PDY$(date +"%H%M")"
+
+#Set yesterday PDY and YPDYHHMM to search yesterdays COMIN/COMOUT for combine
+export YPDY=$(finddate.sh $PDY d-1)
+export YPDYHHMM="$YPDY$(date +"%H%M")"
+
+mkdir -p $DATA/$YPDY/jsonfiles_${rescount} 
+mkdir -p $DATA/$PDY/jsonfiles_${rescount}
+
+##############################################
+# Define variables/flags
+##############################################
+export NET=hwm
+export RUN=hwm
+export model_ver=${hwm_ver}
+export KEEPDATA=${KEEPDATA:-NO}
+
+####################################
+# Specify Execution Areas
+####################################
+export FIXhwm=${FIXhwm:-${HOMEhwm}/fix}
+export EXEChwm=${EXEChwm:-${HOMEhwm}/exec}
+export SORChwm=${SORChwm:-${HOMEhwm}/sorc}
+export PARMhwm=${PARMhwm:-${HOMEhwm}/parm}
+export USHhwm=${USHhwm:-${HOMEhwm}/ush}
+
+##############################################
+# Define COM directorys
+##############################################
+export COMIN=${COMIN:-$(compath.py ${NET}/${model_ver}/${RUN}.${PDY})}
+export COMINy=${COMINy:-$(compath.py ${NET}/${model_ver}/${RUN}.${YPDY})}
+export COMINnwges=${COMINnwges:-$COMIN/nwges_${res}_${rescount}}
+export COMINnwgesy=${COMINnwgesy:-$COMINy/nwges_${res}_${rescount}}
+
+export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${model_ver}/${RUN}.${PDY})}
+export COMOUTy=${COMOUTy:-$(compath.py -o ${NET}/${model_ver}/${RUN}.${YPDY})}
+export COMOUTnwges=${COMOUTnwges:-$COMOUT/nwges_${res}_${rescount}}
+export COMOUTnwgesy=${COMOUTnwgesy:-$COMOUTy/nwges_${res}_${rescount}}
+export COMOUTproj=${COMOUTproj:-$(compath.py ${NET}/${model_ver}/project_files)}
+
+if [ ! -f $COMOUT ] ; then
+   mkdir -m 775 -p $COMOUT $COMOUTnwges $COMOUTproj
+fi
+
+if [ ! -f $COMOUTy ] ; then
+   mkdir -m 775 -p $COMOUTy $COMOUTnwgesy
+fi
+
+##############################################
+# Execute the script
+##############################################
+    ${HOMEhwm}/scripts/exhwm_combine.sh
+    export err=$?; err_chk
+
+msg="JOB $job HAS COMPLETED NORMALLY."
+postmsg "$msg"
+
+cd $DATAROOT
+if [ "$KEEPDATA" == "NO" ]; then
+    rm -rf $DATA
+fi
+date

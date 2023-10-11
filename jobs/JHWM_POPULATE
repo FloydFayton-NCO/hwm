@@ -1,0 +1,87 @@
+#!/bin/sh
+
+startj=$(date +%s.%N)
+set -xa
+
+export PS4='$SECONDS + '
+date -u
+
+export DATA=${DATA:-${DATAROOT}/${jobid:?}}
+[[ -d $DATA ]] && rm -rf $DATA
+mkdir -p $DATA 
+cd $DATA
+
+#set PDY and YPDY
+export PDY=$(date +"%Y%m%d")
+export YPDY=$(finddate.sh $PDY d-1)
+
+#make directories for populate search and intermediate files
+mkdir -p $DATA/$YPDY/jsonfiles_${rescount}
+mkdir -p $DATA/$PDY/jsonfiles_${rescount}
+
+#for zero byte json files brought back from comout
+mkdir -p $DATA/$PDY/new_reinit_files_${rescount}
+mkdir -p $DATA/$YPDY/new_reinit_files_${rescount}
+
+#for pbs file test to keep project file up to date.
+export PBS_PROJ_FILE='/sfs/pbs/acct/wcossii-projects'
+export MY_PROJ_FILE='wcossii_projects' 
+
+##############################################
+# Define variables/flags
+##############################################
+export NET=hwm
+export RUN=hwm
+export model_ver=${hwm_ver}
+export KEEPDATA=${KEEPDATA:-NO}
+
+####################################
+# Specify Execution Areas
+####################################
+export FIXhwm=${FIXhwm:-${HOMEhwm}/fix}
+export EXEChwm=${EXEChwm:-${HOMEhwm}/exec}
+export SORChwm=${SORChwm:-${HOMEhwm}/sorc}
+export PARMhwm=${PARMhwm:-${HOMEhwm}/parm}
+export USHhwm=${USHhwm:-${HOMEhwm}/ush}
+
+##############################################
+# Define COM directorys
+##############################################
+export COMOUT=${COMOUT:-$(compath.py -v -o ${NET}/${model_ver}/${RUN}.${PDY})}
+export COMOUTy=${COMOUTy:-$(compath.py -v -o ${NET}/${model_ver}/${RUN}.${YPDY})}
+export COMOUTnwges=${COMOUTnwges:-$COMOUT/nwges_${res}_${rescount}}
+export COMOUTnwgesy=${COMOUTnwgesy:-$COMOUTy/nwges_${res}_${rescount}}
+export COMOUTproj=${COMOUTproj:-$(compath.py ${NET}/${model_ver}/project_files)}
+
+export COMIN=${COMIN:-$(compath.py ${NET}/${model_ver}/${RUN}.${PDY})}
+export COMINy=${COMINy:-$(compath.py ${NET}/${model_ver}/${RUN}.${YPDY})}
+export COMINnwges=${COMINnwges:-$COMIN/nwges_${res}_${rescount}}
+export COMINnwgesy=${COMINnwgesy:-$COMINy/nwges_${res}_${rescount}}
+
+if [ ! -f $COMOUT ] ; then
+mkdir -m 775 -p $COMOUT $COMOUTnwges $COMOUTproj
+fi
+
+if [ ! -f $COMOUTy ] ; then
+mkdir -m 775 -p $COMOUTy $COMOUTnwgesy
+fi
+
+##############################################
+# Execute the script
+##############################################
+${HOMEhwm}/scripts/exhwm_populate.sh
+export err=$?; err_chk
+
+msg="JOB $job HAS COMPLETED NORMALLY."
+postmsg "$msg"
+
+cd $DATAROOT
+if [ "$KEEPDATA" == "NO" ]; then
+    rm -rf $DATA
+fi
+
+endj=$(date +%s.%N)
+runtime=$(echo "$endj - $startj" | bc -l )
+echo "runtime for jjob was $runtime seconds"
+
+date

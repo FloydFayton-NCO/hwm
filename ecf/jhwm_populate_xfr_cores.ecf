@@ -1,0 +1,52 @@
+#PBS -N hwm_populate_xfr_cores_%TIME%
+#PBS -S /bin/bash
+#PBS -j oe
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -q %QUEUE%
+#PBS -l walltime=00:20:00
+#PBS -l place=vscatter:shared,select=1:ncpus=1:mem=4000mb
+#PBS -W umask=022
+#PBS -l debug=true
+
+export model=hwm
+%include <head.h>
+%include <envir-p1.h>
+
+##############################################
+#  module load
+##############################################
+
+module load intel/${intel_ver}
+module load python/${python_ver}
+module list
+
+set -x
+
+#set count variable, nodes or cores from task name
+task=%TASK%
+export rescount="${task:18}"
+export res="${task:14:3}"
+
+${HOMEhwm}/jobs/JHWM_POPULATE
+
+#used as event trigger to start task jhwm_combine
+#ecflow_client --event=release_combine_${res}_${rescount}
+ecflow_client --event=release_combine_xfr_cores
+sleep 1
+
+%include <tail.h>
+%manual
+################################################################################
+#TASKSCRIPT DOCUMENTATION BLOCK
+#TASKSCRIPT:     jhwm_populate_cores
+#LAST MODIFIER:  Gregory Mott
+#DATE:           Oct 2021
+#PURPOSE:   To populate HWM Json files with per minute core count information per project
+#JOB SCRIPT CALLED: JHWM_POPULATE
+#################################################################################
+######################################################################
+# Job specific troubleshooting instructions:
+#  see generic troubleshoot manual page
+#
+######################################################################
+%end
