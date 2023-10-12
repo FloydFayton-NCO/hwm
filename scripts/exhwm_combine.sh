@@ -71,15 +71,13 @@ else
 
 fi
 
-export chart=live
-
 #final combined file in live_finaljson in DATA
+export chart=live
 ${USHhwm}/hwm_combine.py $PDYHHMM $chart $rescount
 export err=$?; err_chk
 
-export chart=daily
-
 #final combined file in daily_finaljson in DATA
+export chart=daily
 ${USHhwm}/hwm_combine.py $YPDYHHMM $chart $rescount
 export err=$?; err_chk
 
@@ -89,7 +87,7 @@ livefile="$DATA/live_${rescount}_finaljson/live_p1.json"
 
 if [ -s "$livefile" ]; then
    echo "final combined file $livefile exists and is not empty, copying to $COMOUT"
-   cpreq $DATA/live_${rescount}_finaljson/live_p1.json $COMOUT/live_${res}_${rescount}_p1.json    
+   cpreq ${livefile} $COMOUT/live_${res}_${rescount}_p1.json    
 else
    echo "final combined file $livefile does not exist, and is not empty, not copying to $COMOUT"
 fi
@@ -98,7 +96,7 @@ dailyfile="$DATA/daily_${rescount}_finaljson/daily_p1.json"
 
 if [ -s "$dailyfile" ]; then
    echo "final combined file $dailyfile exists and is not empty, copying to $COMOUT"
-   cpreq $DATA/daily_${rescount}_finaljson/daily_p1.json $COMOUT/daily_${res}_${rescount}_p1.json
+   cpreq ${dailyfile} $COMOUT/daily_${res}_${rescount}_p1.json
 else
    echo "final combined file $dailyfile does not exist, and is not empty, not copying to $COMOUT"
 fi
