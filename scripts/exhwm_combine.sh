@@ -11,7 +11,7 @@ start=`date +%s.%N`
 cpreq $COMOUTproj/wcossii_projects_${res}_${rescount} $DATA/wcossii_projects
 
 if [ -d "$COMINnwgesy" ] ; then
-echo "$COMINnwgesy DIRECTORY FOUND!!!"
+   echo "$COMINnwgesy DIRECTORY FOUND!!!"
 
    if [ -z "$(ls -A $COMINnwgesy 2>/dev/null)" ] ; then
       echo "WARNING: NO INITIALIZED JSON FILES FOUND IN $COMINnwgesy"
@@ -20,8 +20,8 @@ echo "$COMINnwgesy DIRECTORY FOUND!!!"
       ${USHhwm}/hwm_initialize.py $YPDY $rescount
       export err=$?; err_chk
 
-      cpreq $DATA/$YPDY/jsonfiles_$rescount/*json $DATA/nwges_${rescount}01 
-  
+      cpreq $DATA/$YPDY/jsonfiles_$rescount/*json $DATA/nwges_${rescount}01
+      
    else
       echo "$COMINnwgesy FILES COPIED TO $DATA/nwges_${rescount}01 FOR COMBINE!!!"
       cpreq $COMINnwgesy/* $DATA/nwges_${rescount}01 
@@ -87,23 +87,21 @@ echo "copy final combined files from the live and daily combine runs to $COMOUT"
 
 livefile="$DATA/live_${rescount}_finaljson/live_p1.json"
 
-   if [ -s "$livefile" ]
-   then
-      echo "final combined file $livefile exists and is not empty, copying to $COMOUT"
-      cpreq $DATA/live_${rescount}_finaljson/live_p1.json $COMOUT/live_${res}_${rescount}_p1.json    
-   else
-      echo "final combined file $livefile does not exist, and is not empty, not copying to $COMOUT"
-   fi
+if [ -s "$livefile" ]; then
+   echo "final combined file $livefile exists and is not empty, copying to $COMOUT"
+   cpreq $DATA/live_${rescount}_finaljson/live_p1.json $COMOUT/live_${res}_${rescount}_p1.json    
+else
+   echo "final combined file $livefile does not exist, and is not empty, not copying to $COMOUT"
+fi
 
 dailyfile="$DATA/daily_${rescount}_finaljson/daily_p1.json"
 
-   if [ -s "$dailyfile" ]
-   then
-      echo "final combined file $dailyfile exists and is not empty, copying to $COMOUT"
-      cpreq $DATA/daily_${rescount}_finaljson/daily_p1.json $COMOUT/daily_${res}_${rescount}_p1.json
-   else
-      echo "final combined file $dailyfile does not exist, and is not empty, not copying to $COMOUT"
-   fi
+if [ -s "$dailyfile" ]; then
+   echo "final combined file $dailyfile exists and is not empty, copying to $COMOUT"
+   cpreq $DATA/daily_${rescount}_finaljson/daily_p1.json $COMOUT/daily_${res}_${rescount}_p1.json
+else
+   echo "final combined file $dailyfile does not exist, and is not empty, not copying to $COMOUT"
+fi
 
 end=$(date +%s.%N)
 runtime=$(echo "$end - $start" | bc -l )

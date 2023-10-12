@@ -24,33 +24,33 @@ export err=$?; err_chk
 
 #check if initialized files are in COMINnwges (today)
 if [ -z "$(ls -A $COMINnwges)" ] ; then
-echo "WARNING: NO INITIALIZED JSON FILES FOUND IN $COMINnwges"
-echo "INITIALIZING JSON FILES FOR $PDY!!!!"
+   echo "WARNING: NO INITIALIZED JSON FILES FOUND IN $COMINnwges"
+   echo "INITIALIZING JSON FILES FOR $PDY!!!!"
 
-${USHhwm}/hwm_initialize.py $PDY $rescount
-export err=$?; err_chk
+   ${USHhwm}/hwm_initialize.py $PDY $rescount
+   export err=$?; err_chk
 
 else
 
-echo "Previously populated json files copied from $COMINnwges!!!"
-cpreq $COMINnwges/*json $DATA/$PDY/jsonfiles_$rescount
+   echo "Previously populated json files copied from $COMINnwges!!!"
+   cpreq $COMINnwges/*json $DATA/$PDY/jsonfiles_$rescount
 
-echo "checking for zero byte file size for json files copied from $COMINnwges"
+   echo "checking for zero byte file size for json files copied from $COMINnwges"
 
-shopt -s nullglob
-for i in $DATA/$PDY/jsonfiles_$rescount/*.json; do
+   shopt -s nullglob
+   for i in $DATA/$PDY/jsonfiles_$rescount/*.json; do
 
-   if [ -s "$i" ]
-   then
-      echo "populated file $i copied from $COMINnwges exists and is not empty, do nothing" > /dev/null
-   else
-      echo "POPULATED FILE $i FROM $COMINnwges DOES NOT EXIST OR IS EMPTY, REINITIALIZE!!!!!"
-      newi=$(echo $i | sed 's/.*\///' | sed 's|\(.*\)\..*|\1|')
-      ${USHhwm}/hwm_reinit.py $PDY ${rescount} $newi
-      export err=$?; err_chk
-   fi
+      if [ -s "$i" ]
+      then
+         echo "populated file $i copied from $COMINnwges exists and is not empty, do nothing" > /dev/null
+      else
+         echo "POPULATED FILE $i FROM $COMINnwges DOES NOT EXIST OR IS EMPTY, REINITIALIZE!!!!!"
+         newi=$(echo $i | sed 's/.*\///' | sed 's|\(.*\)\..*|\1|')
+         ${USHhwm}/hwm_reinit.py $PDY ${rescount} $newi
+         export err=$?; err_chk
+      fi
 
-done
+   done
 
 fi
 
@@ -69,13 +69,13 @@ cluster=$(cat /etc/cluster_name | cut -c1)
 
 #dump F and R jobs
 if [[ $(qstat -fHw @${cluster}bqs01) ]]; then
-    echo "server ${cluster}bqs01!!!"
-    qstat -fHw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|history_timestamp =|stime =" > qstat.out
-    qstat -frw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|stime =" > qstat_running.out
+   echo "server ${cluster}bqs01!!!"
+   qstat -fHw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|history_timestamp =|stime =" > qstat.out
+   qstat -frw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|stime =" > qstat_running.out
 elif [[ $(qstat -fHw @${cluster}bqs02) ]]; then
-    echo "server ${cluster}bqs02!!!"
-    qstat -fHw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|history_timestamp =|stime =" > qstat.out
-    qstat -frw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|stime =" > qstat_running.out
+   echo "server ${cluster}bqs02!!!"
+   qstat -fHw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|history_timestamp =|stime =" > qstat.out
+   qstat -frw @${cluster}bqs01 | grep -E "Job Id|job_state|project =|queue =|exec_vnode =|Resource_List.place =|stime =" > qstat_running.out
 fi
 
 #Append files for read into python code
@@ -104,7 +104,7 @@ SPDY=$(echo $SPDYHHMM | cut -c1-8)
 #Only initialize these files or copy to DATA if they are needed. If the search start time SPDY is not in YPDY (yesterday), not needed
 if [[ "${SPDY}" == "${YPDY}" ]]; then
 
-echo "$SPDY = $YPDY start time (SPDY) of search = YPDY, copy json files from $COMINnwgesy or initialize if they aren't there!!!"
+   echo "$SPDY = $YPDY start time (SPDY) of search = YPDY, copy json files from $COMINnwgesy or initialize if they aren't there!!!"
 
    if [ -z "$(ls -A $COMINnwgesy)" ] ; then
       echo "WARNING: NO INITIALIZED JSON FILES FOUND IN $COMINnwgesy"
@@ -136,11 +136,11 @@ echo "$SPDY = $YPDY start time (SPDY) of search = YPDY, copy json files from $CO
       done
    fi
 
-#copy reinitialized files back into directory of files to be populated from this run
-shopt -s nullglob
-for i in $DATA/$YPDY/new_reinit_files_$rescount/*.json; do
-   cpreq $i $DATA/$YPDY/jsonfiles_$rescount
-done
+   #copy reinitialized files back into directory of files to be populated from this run
+   shopt -s nullglob
+   for i in $DATA/$YPDY/new_reinit_files_$rescount/*.json; do
+      cpreq $i $DATA/$YPDY/jsonfiles_$rescount
+   done
 
 fi
 
@@ -171,20 +171,20 @@ done
 #only copy these files if they were copied to DATA and populated, this tests for that
 if [[ "${FSPDY}" == "${YPDY}" ]]; then
 
-echo "copy files to COMOUTy"
+   echo "copy files to COMOUTy"
 
-shopt -s nullglob
-for i in $DATA/$YPDY/jsonfiles_$rescount/*.json; do
+   shopt -s nullglob
+   for i in $DATA/$YPDY/jsonfiles_$rescount/*.json; do
 
-   if [ -s "$i" ]
-   then
-      echo "populated file $i exists and is not empty, copying to $COMOUTnwgesy" > /dev/null
-      cpreq $i $COMOUTnwgesy
-   else
-      echo "populated file $i does not exist, or is empty, do not copy to $COMOUTnwgesy"
-   fi
+      if [ -s "$i" ]
+      then
+         echo "populated file $i exists and is not empty, copying to $COMOUTnwgesy" > /dev/null
+         cpreq $i $COMOUTnwgesy
+      else
+         echo "populated file $i does not exist, or is empty, do not copy to $COMOUTnwgesy"
+      fi
 
-done
+   done
 fi
 
 end=$(date +%s.%N)

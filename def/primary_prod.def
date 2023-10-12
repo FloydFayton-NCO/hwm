@@ -1,70 +1,67 @@
 #ecflow_client --replace /prod/primary/cron/hwm /lfs/h1/ops/prod/packages/hwm.v1.0.3/def/primary_prod.def --host=decflow02 --port=31415
 
 suite prod
-family primary
-family cron
-  family hwm
-defstatus complete
-    family v1.0
-      edit PACKAGEHOME '/lfs/h1/ops/%ENVIR%/packages/hwm.%hwm_ver%'
-      edit PROJ 'NCO'
-      family nid_nodes
-        task jhwm_populate_nid_nodes
-          event release_combine_nid_nodes
-          cron 00:05 23:45 00:10
-        task jhwm_combine_nid_nodes
-          trigger jhwm_populate_nid_nodes:release_combine_nid_nodes
-          event release_transfer_nid_nodes
-          cron 00:05 23:45 00:10
-        task jhwm_transfer_nid_nodes
-          edit QUEUE 'prod_transfer'
-          trigger jhwm_combine_nid_nodes:release_transfer_nid_nodes
-          cron 00:05 23:45 00:10
+  family primary
+    family cron
+      family hwm
+        defstatus complete
+        family v1.0
+          edit PACKAGEHOME '/lfs/h1/ops/%ENVIR%/packages/hwm.%hwm_ver%'
+          edit PROJ 'NCO'
+          family nid_nodes
+            task jhwm_populate_nid_nodes
+              event release_combine_nid_nodes
+              cron 00:05 23:45 00:10
+            task jhwm_combine_nid_nodes
+              trigger jhwm_populate_nid_nodes:release_combine_nid_nodes
+              event release_transfer_nid_nodes
+              cron 00:05 23:45 00:10
+            task jhwm_transfer_nid_nodes
+              edit QUEUE 'prod_transfer'
+              trigger jhwm_combine_nid_nodes:release_transfer_nid_nodes
+              cron 00:05 23:45 00:10
+          endfamily
+          family nid_cores
+            task jhwm_populate_nid_cores
+              event release_combine_nid_cores
+              cron 00:05 23:45 00:10
+            task jhwm_combine_nid_cores
+              trigger jhwm_populate_nid_cores:release_combine_nid_cores
+              event release_transfer_nid_cores
+              cron 00:05 23:45 00:10
+            task jhwm_transfer_nid_cores
+              edit QUEUE 'prod_transfer'
+              trigger jhwm_combine_nid_cores:release_transfer_nid_cores
+              cron 00:05 23:45 00:10
+          endfamily
+          family cpp_nodes
+            task jhwm_populate_cpp_nodes
+              event release_combine_cpp_nodes
+              cron 00:05 23:45 00:10
+            task jhwm_combine_cpp_nodes
+              trigger jhwm_populate_cpp_nodes:release_combine_cpp_nodes
+              event release_transfer_cpp_nodes
+              cron 00:05 23:45 00:10
+            task jhwm_transfer_cpp_nodes
+              edit QUEUE 'prod_transfer'
+              trigger jhwm_combine_cpp_nodes:release_transfer_cpp_nodes
+              cron 00:05 23:45 00:10
+          endfamily
+          family xfr_cores
+            task jhwm_populate_xfr_cores
+              event release_combine_xfr_cores
+              cron 00:05 23:45 00:10
+            task jhwm_combine_xfr_cores
+              trigger jhwm_populate_xfr_cores:release_combine_xfr_cores
+              event release_transfer_xfr_cores
+              cron 00:05 23:45 00:10
+            task jhwm_transfer_xfr_cores
+              edit QUEUE 'prod_transfer'
+              trigger jhwm_combine_xfr_cores:release_transfer_xfr_cores
+              cron 00:05 23:45 00:10
+          endfamily
+        endfamily
       endfamily
-      family nid_cores
-        task jhwm_populate_nid_cores
-          event release_combine_nid_cores
-          cron 00:05 23:45 00:10
-        task jhwm_combine_nid_cores
-          trigger jhwm_populate_nid_cores:release_combine_nid_cores
-          event release_transfer_nid_cores
-          cron 00:05 23:45 00:10
-        task jhwm_transfer_nid_cores
-          edit QUEUE 'prod_transfer'
-          trigger jhwm_combine_nid_cores:release_transfer_nid_cores
-          cron 00:05 23:45 00:10
-      endfamily
-
-      family cpp_nodes
-        task jhwm_populate_cpp_nodes
-          event release_combine_cpp_nodes
-          cron 00:05 23:45 00:10
-        task jhwm_combine_cpp_nodes
-          trigger jhwm_populate_cpp_nodes:release_combine_cpp_nodes
-          event release_transfer_cpp_nodes
-          cron 00:05 23:45 00:10
-        task jhwm_transfer_cpp_nodes
-          edit QUEUE 'prod_transfer'
-          trigger jhwm_combine_cpp_nodes:release_transfer_cpp_nodes
-          cron 00:05 23:45 00:10
-      endfamily
-
-      family xfr_cores
-        task jhwm_populate_xfr_cores
-          event release_combine_xfr_cores
-          cron 00:05 23:45 00:10
-        task jhwm_combine_xfr_cores
-          trigger jhwm_populate_xfr_cores:release_combine_xfr_cores
-          event release_transfer_xfr_cores
-          cron 00:05 23:45 00:10
-        task jhwm_transfer_xfr_cores
-          edit QUEUE 'prod_transfer'
-          trigger jhwm_combine_xfr_cores:release_transfer_xfr_cores
-          cron 00:05 23:45 00:10
-      endfamily
-
     endfamily
   endfamily
-endfamily
-endfamily
 endsuite

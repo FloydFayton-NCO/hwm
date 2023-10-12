@@ -59,11 +59,11 @@ export COMINnwges=${COMINnwges:-$COMIN/nwges_${res}_${rescount}}
 export COMINnwgesy=${COMINnwgesy:-$COMINy/nwges_${res}_${rescount}}
 
 if [ ! -f $COMOUT ] ; then
-mkdir -m 775 -p $COMOUT $COMOUTnwges $COMOUTproj
+    mkdir -m 775 -p $COMOUT $COMOUTnwges $COMOUTproj
 fi
 
 if [ ! -f $COMOUTy ] ; then
-mkdir -m 775 -p $COMOUTy $COMOUTnwgesy
+    mkdir -m 775 -p $COMOUTy $COMOUTnwgesy
 fi
 
 ##############################################

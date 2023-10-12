@@ -23,12 +23,12 @@ function rsync_sh {
     set +xa
     echo ${options:?" FATAL ERROR:  Need to set \"options\" properly to avoid lengthy transfers. "}
     if [[ "${source}" == *"live_${res}_${rescount}_p1.json"* ]]; then
-           echo "$source json live ${res} ${rescount} combined files found to transfer to intra!!!"
+        echo "$source json live ${res} ${rescount} combined files found to transfer to intra!!!"
     elif [[ "${source}" == *"daily_${res}_${rescount}_p1.json"* ]]; then
-           echo "$source json daily ${res} ${rescount} combined files found to transfer to intra!!!"
+        echo "$source json daily ${res} ${rescount} combined files found to transfer to intra!!!"
     else
-	   echo "FATAL ERROR: No json ${res} ${rescount} combined files found to transfer to intra!!!"
-           err_exit
+	    echo "FATAL ERROR: No json ${res} ${rescount} combined files found to transfer to intra!!!"
+        err_exit
     fi
 
     if [ $# -eq 2  ] ; then
@@ -70,39 +70,39 @@ export options=(-aWzv --timeout=30 --delete --progress --stats)
 cluster=$(cat /etc/cluster_name)
 
 if [[ "${cluster}" == "dogwood" ]]  && [ "${envir}" = "prod" ]; then
-      export REMOTE_DIR="~/pmb/spatools/HWM/DOGWOOD"
+    export REMOTE_DIR="~/pmb/spatools/HWM/DOGWOOD"
 elif [[ "${cluster}" == "cactus" ]] && [ "${envir}" = "prod" ]; then
-      export REMOTE_DIR="~/pmb/spatools/HWM/CACTUS"
+    export REMOTE_DIR="~/pmb/spatools/HWM/CACTUS"
 fi
 
 if [[ "${cluster}" == "dogwood" ]]  && [ "${envir}" = "para" ]; then
-   export REMOTE_DIR="~/pmb/spatools/HWM/DOGWOOD_para"
+    export REMOTE_DIR="~/pmb/spatools/HWM/DOGWOOD_para"
 elif [[ "${cluster}" == "cactus" ]] && [ "${envir}" = "para" ]; then
-   export REMOTE_DIR="~/pmb/spatools/HWM/CACTUS_para"
+    export REMOTE_DIR="~/pmb/spatools/HWM/CACTUS_para"
 fi
 
 if [ "${SENDWEB}" = "YES" ] && [ "${envir}" = "prod" ]; then
 
-echo "transfer live HWM files to intra!!!!"
-${RSYNC} $COMIN/live_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/live/data
-export err=$?; err_chk 
+    echo "transfer live HWM files to intra!!!!"
+    ${RSYNC} $COMIN/live_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/live/data
+    export err=$?; err_chk 
 
-echo "transfer daily HWM files to intra!!!!"
-${RSYNC} $COMIN/daily_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/daily/data
-export err=$?; err_chk 
+    echo "transfer daily HWM files to intra!!!!"
+    ${RSYNC} $COMIN/daily_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/daily/data
+    export err=$?; err_chk 
 
 elif [ "${SENDWEB}" = "YES" ] && [ "${envir}" = "para" ];then
 
-echo "transfer live HWM files to intra!!!!"
-${RSYNC} $COMIN/live_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/live/data
-export err=$?; err_chk
+    echo "transfer live HWM files to intra!!!!"
+    ${RSYNC} $COMIN/live_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/live/data
+    export err=$?; err_chk
 
-echo "transfer daily HWM files to intra!!!!"
-${RSYNC} $COMIN/daily_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/daily/data
-export err=$?; err_chk
+    echo "transfer daily HWM files to intra!!!!"
+    ${RSYNC} $COMIN/daily_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/daily/data
+    export err=$?; err_chk
 
 else
-   echo "NO FILES BEING SENT TO INTRA WITH THIS RUN!!!!!!!!!!!!!"
+    echo "NO FILES BEING SENT TO INTRA WITH THIS RUN!!!!!!!!!!!!!"
 fi
 
 msg="JOB $job HAS COMPLETED NORMALLY."
