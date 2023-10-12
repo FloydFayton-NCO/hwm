@@ -84,7 +84,7 @@ jobs_file = open("qstat.out", "r")
 # Handles chunks
 while True:
     first_job_line = True
-#each loop through creates a new dictionary for a job that is processed below and appeneded to finallist
+    #each loop through creates a new dictionary for a job that is processed below and appeneded to finallist
     new={}
 
     # Handles one job
@@ -305,7 +305,7 @@ for i in range(0,timesteps):
                 json_data = json.load(f)
                 arr=json_data[0]['data']
                 for i in arr:
-                     if timei == i[0]:
+                    if timei == i[0]:
                         i[1]=v
                         print('Time match', timei,' was found in the initialized files, populating:',filename, countres, v)
                         with open(jsond+'/'+timei_cal+'/jsonfiles_'+countres+'/'+filename, 'w') as final:

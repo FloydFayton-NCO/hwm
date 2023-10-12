@@ -99,7 +99,6 @@ for i in project_list:
                         result2.extend(result)
                         with open(txtdir+filenametxt, 'w') as final:
                             final.write(json.dumps(result2))
-
         else:
             print('Individual json file=',f,' empty, not combined!')
 

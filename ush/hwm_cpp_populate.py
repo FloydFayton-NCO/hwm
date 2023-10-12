@@ -23,7 +23,6 @@ def merge(list1, list2):
 
     merged_list = []
     for i in range(max((len(list1), len(list2)))):
-
         while True:
             try:
                 tup = (list1[i], list2[i])
@@ -35,7 +34,6 @@ def merge(list1, list2):
                     list1.append('')
                     tup = (list1[i], list2[i])
                 continue
-
             merged_list.append(tup)
             break
     return merged_list
@@ -84,7 +82,7 @@ jobs_file = open("qstat.out", "r")
 # Handles chunks
 while True:
     first_job_line = True
-#each loop through creates a new dictionary for a job that is processed below and appeneded to finallist
+    #each loop through creates a new dictionary for a job that is processed below and appeneded to finallist
     new={}
 
     # Handles one job
@@ -205,7 +203,7 @@ while True:
                                                             intcleaned = [ int(x) for x in cleaned ]
                                                             cores=sum(intcleaned)
                                                             newest["exec_vnode"] = cores
-
+                                                            
                                         #final list to sort through each time slice, it's highly constrained to avoid failures in the next section
                                         #this list has a core count, unlike the list for nodes above. The core-count code runs faster. 
                                         finallist.append(newest)
@@ -304,7 +302,7 @@ for i in range(0,timesteps):
                 json_data = json.load(f)
                 arr=json_data[0]['data']
                 for i in arr:
-                     if timei == i[0]:
+                    if timei == i[0]:
                         i[1]=v
                         print('Time match', timei,' was found in the initialized files, populating:',filename, countres, v)
                         with open(jsond+'/'+timei_cal+'/jsonfiles_'+countres+'/'+filename, 'w') as final:

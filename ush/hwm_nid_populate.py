@@ -23,7 +23,6 @@ def merge(list1, list2):
 
     merged_list = []
     for i in range(max((len(list1), len(list2)))):
-
         while True:
             try:
                 tup = (list1[i], list2[i])
@@ -35,7 +34,6 @@ def merge(list1, list2):
                     list1.append('')
                     tup = (list1[i], list2[i])
                 continue
-
             merged_list.append(tup)
             break
     return merged_list
@@ -303,7 +301,7 @@ for i in range(0,timesteps):
                 json_data = json.load(f)
                 arr=json_data[0]['data']
                 for i in arr:
-                     if timei == i[0]:
+                    if timei == i[0]:
                         i[1]=v
                         print('Time match', timei,' was found in the initialized files, populating:',filename, countres, v)
                         with open(jsond+'/'+timei_cal+'/jsonfiles_'+countres+'/'+filename, 'w') as final:
