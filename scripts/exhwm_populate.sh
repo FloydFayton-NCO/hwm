@@ -10,7 +10,6 @@ start=`date +%s.%N`
 #check for existence of intermediate project files
 if [[ -f "$COMOUTproj/wcossii_projects_${res}_${rescount}" ]];then
    cpreq $COMOUTproj/wcossii_projects_${res}_${rescount} $DATA/wcossii_projects
-
 else
    echo "file doesn't exist, make it, and initialize all json files in hwm_test_new_proj.sh!"
    touch wcossii_projects
