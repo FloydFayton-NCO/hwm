@@ -69,7 +69,7 @@ done
 ##############################################
 # Execute the script
 ##############################################
-export MODEL_CTRL='${MODEL_CTRL:-${PARMhwm}/model_control}'
+export FCST_CTRL='${FCST_CTRL:-${PARMhwm}/model_control}'
 ${HOMEhwm}/scripts/exhwm_forecast.sh
 export err=$?; err_chk
 

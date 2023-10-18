@@ -22,6 +22,7 @@ suite para
               cron 00:05 23:45 00:10
             task jhwm_forecast_nid_nodes
               defstatus complete              
+              edit FCST_CTRL '/home/ffayton/hwm_fcst_ctrl'
           endfamily
           family nid_cores
             task jhwm_populate_nid_cores
