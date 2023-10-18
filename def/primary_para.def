@@ -20,6 +20,8 @@ suite para
               edit QUEUE 'prod_transfer'
               trigger jhwm_combine_nid_nodes:release_transfer_nid_nodes
               cron 00:05 23:45 00:10
+            task jhwm_forecast_nid_nodes
+              defstatus complete              
           endfamily
           family nid_cores
             task jhwm_populate_nid_cores

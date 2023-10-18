@@ -70,8 +70,8 @@ fi
 ##############################################
 # Execute the script
 ##############################################
-    ${HOMEhwm}/scripts/exhwm_combine.sh
-    export err=$?; err_chk
+${HOMEhwm}/scripts/exhwm_combine.sh
+export err=$?; err_chk
 
 msg="JOB $job HAS COMPLETED NORMALLY."
 postmsg "$msg"

@@ -1,0 +1,49 @@
+#PBS -N hwm_forecast_nid_nodes_%TIME%
+#PBS -S /bin/bash
+#PBS -j oe
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -q %QUEUE%
+#PBS -l walltime=00:10:00
+#PBS -l place=vscatter:shared,select=1:ncpus=1:mem=200MB
+#PBS -W umask=022
+#PBS -l debug=true
+
+export model=hwm
+%include <head.h>
+%include <envir-p1.h>
+
+#############################################
+#  module load
+#############################################
+
+module load intel/${intel_ver}
+module load python/${python_ver}
+module list
+
+set -x
+
+#set count variable, nodes or cores from task name
+task=%TASK%
+export rescount="${task:17}"
+export res="${task:13:3}"
+export MODEL_CTRL=%MODEL_CTRL%
+
+${HOMEhwm}/jobs/JHWM_FORECAST 
+
+%include <tail.h>
+
+%manual
+################################################################################
+#TASKSCRIPT DOCUMENTATION BLOCK
+#TASKSCRIPT:     jhwm_forecast_nodes
+#LAST MODIFIER:  FLOYD FAYTON
+#DATE:           Oct 2023
+#PURPOSE:  To create HWM chart displaying future node count for daily/live views
+#JOB SCRIPT CALLED: JHWM_FORECAST
+#################################################################################
+######################################################################
+# Job specific troubleshooting instructions:
+#  see generic troubleshoot manual page
+#
+######################################################################
+%end
