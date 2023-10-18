@@ -57,7 +57,7 @@ if [ ! -f $COMOUTy ] ; then
 fi
 
 # Control file determines which modifications are made by model
-export FCST_CTRL='${FCST_CTRL:-${PARMhwm}/fcst_control}'
+export FCST_CTRL='${FCST_CTRL:-${PARMhwm}/fcst_ctrl}'
 
 ##############################################
 # Execute the script
