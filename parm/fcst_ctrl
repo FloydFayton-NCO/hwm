@@ -1,0 +1,7 @@
+# first/third col is np.multiply (*), np.divide (/), etc. - ordered for sorting, 
+# always delete decomissioned models before array modifications 
+- GFS-OPS 0
+- FLOYD-DEV 0
++ GFS-OPS 1298
+* GFS-OPS 2
+/ PSURGE-OPS 2
