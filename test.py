@@ -1,3 +1,4 @@
+#jiif = open(iifile)
 import readline
 import json as j
 import numpy as np
@@ -18,5 +19,11 @@ for index, row in jsonctrl.iterrows():
     #addition, multiplicatio, division, or subtraction
     for i in ljsonf:
         if model in i[0]['name']:
-            for t, v in i[0]['data']:
-                print(t,v)
+            x1=i[0]['data'][:][:1]
+            x2=number
+
+            #del model by zero'ing value in time,value lists
+            if number == 0:
+                for t, v in i[0]['data']:
+                    x1=0
+        print(i[0]['data'][:][:1])

@@ -41,13 +41,18 @@ for index, row in jsonctrl.iterrows():
     #addition, multiplicatio, division, or subtraction
     for i in ljsonf:
         if model in i[0]['name']:
-            x1=i[0]['data'][1][1]
+            x1=i[0]['data'][:][1]
             x2=number
+
+            #del model by zero'ing value in time,value lists
             if number == 0:
                 for t, v in i[0]['data']:
-                    i[0]['data'][1][1]=0
-                    #print(i[0]['data'][1][1])
-                    print(i[0]['data'][1])
+                    x1=0
+        print(i[0]['data'][:][:1])
+)
+
+
+
             if sign == '*':
                 #max nuvalue 0
                 nuvalue=max(0,x1*x2)
