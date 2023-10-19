@@ -27,8 +27,8 @@ with open('cactus_daily_nid_nodes_p1.json','r') as f1:
 
 with open('parm/fcst_ctrl','r') as f2:
     jsonctrl = pd.read_csv(f2,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
-    jsonctrl = jsonctrl.fillna("0")
-#print(jsonctrl['model'][3])
+    jsonctrl = jsonctrl.fillna("0") # no NaNs or empty fields, last two fields in control have to be integers
+
 for index, row in jsonctrl.iterrows():
     sign=row['sign']
     model=row['model']
@@ -40,7 +40,7 @@ for index, row in jsonctrl.iterrows():
         if model in i[0]['name']:
             x1=i[0]['data'][:][-1][1]
             x2=number        
-            # print(sign,model,number,times)
+            # print(x1," ",sign," ",x2,"=") # math test FAFJ
             
             if sign == '*': # sign * 0 (number) == 0
                 nuvalue=max(0,int(x1*x2))
@@ -61,6 +61,7 @@ for index, row in jsonctrl.iterrows():
             else:
                 print('operand not detected, please fix $PARMhwm/fcst_ctrl file')
                 continue 
+            # print(x1,"\n") # math test FAFJ
 
 
 
