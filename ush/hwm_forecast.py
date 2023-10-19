@@ -22,22 +22,22 @@ import pandas as pd
 # workdir = os.environ["DATA"] + '/'
 # jiif = open(iifile,'r')
 
-with open('cactus_daily_nid_nodes_p1.json','r') as f1:
-    data = j.load(f1)
-
 with open('parm/fcst_ctrl','r') as f2:
     jsonctrl = pd.read_csv(f2,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
     jsonctrl = jsonctrl.fillna("0") # no NaNs or empty fields, last two fields in control have to be integers
+    
+    for index, row in jsonctrl.iterrows():
+        sign=row['sign']
+        model=row['model']
+        number=int(row['number'])
+        times=row['times']
 
-for index, row in jsonctrl.iterrows():
-    sign=row['sign']
-    model=row['model']
-    number=int(row['number'])
-    times=row['times']
-
+with open('cactus_daily_nid_nodes_p1.json','r') as f1:
+    data = j.load(f1)
     #addition, multiplicatio, division, or subtraction
     for i in data:
         if model in i[0]['name']:
+            tx1=i[0]['data'][:][-1]
             x1=i[0]['data'][:][-1][1]
             x2=number        
             # print(x1," ",sign," ",x2,"=") # math test FAFJ
@@ -62,6 +62,7 @@ for index, row in jsonctrl.iterrows():
                 print('operand not detected, please fix $PARMhwm/fcst_ctrl file')
                 continue 
             # print(x1,"\n") # math test FAFJ
+            print(tx1)
 
 
 
