@@ -20,13 +20,13 @@ import pandas as pd
 # iifile = sys.argv[1]
 # fcst_ctrl = os.environ["FCST_CTRL"]
 # workdir = os.environ["DATA"] + '/'
-#jiif = open(iifile)
+# jiif = open(iifile,'r')
 
-jiif = open('cactus_daily_nid_nodes_p1.json')
-data = j.load(jiif)
+jiif = open('cactus_daily_nid_nodes_p1.json','r')
 ctrl = open('parm/fcst_ctrl','r')
-#lines = jctrl.readlines()
+data = j.load(jiif)
 jsonctrl = pd.read_csv(ctrl,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
+
 #print(jsonctrl['model'][3])
 for index, row in jsonctrl.iterrows():
     sign=row['sign']
@@ -41,25 +41,22 @@ for index, row in jsonctrl.iterrows():
             x2=number
             if number == 0:
                 x1=0            
-            print(model, x2,x1)
-
+            # print(sign,model,number,times) #,x2,x1)
             if sign == '*':
-                #max nuvalue 0
-                nuvalue=max(0,x1*x2)
+                nuvalue=max(0,int(x1*x2))
                 x1=nuvalue
             elif sign == '-':
-                nuvalue=max(0,x1-x2)
+                nuvalue=max(0,int(x1-x2))
                 x1=nuvalue
-                exit
             elif sign == '/':
-                nuvalue=max(0,x1/x2)
+                nuvalue=max(0,int(x1/x2))
                 x1=nuvalue
             elif sign == '+':
-                nuvalue=max(0,x1+x2)
+                nuvalue=max(0,int(x1+x2))
                 x1=nuvalue
             else:
-                continue #print('operation not detected, please fix $PARMhwm/fcst_ctrl file')
-            print(model,x1)
+                print('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                continue 
 
 
 
