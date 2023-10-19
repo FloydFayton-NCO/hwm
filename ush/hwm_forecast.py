@@ -22,33 +22,36 @@ import pandas as pd
 # workdir = os.environ["DATA"] + '/'
 # jiif = open(iifile,'r')
 
-jiif = open('cactus_daily_nid_nodes_p1.json','r')
-ctrl = open('parm/fcst_ctrl','r')
-data = j.load(jiif)
-jsonctrl = pd.read_csv(ctrl,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
-jsonctrl = jsonctrl.fillna("")
+with open('cactus_daily_nid_nodes_p1.json','r') as f1:
+    data = j.load(f1)
 
+with open('parm/fcst_ctrl','r') as f2:
+    jsonctrl = pd.read_csv(f2,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
+    jsonctrl = jsonctrl.fillna("0")
 #print(jsonctrl['model'][3])
 for index, row in jsonctrl.iterrows():
     sign=row['sign']
     model=row['model']
-    number=row['number']
+    number=int(row['number'])
     times=row['times']
 
     #addition, multiplicatio, division, or subtraction
     for i in data:
         if model in i[0]['name']:
             x1=i[0]['data'][:][-1][1]
-            x2=number
-            if number == 0:
-                x1=0            
-            print(sign,model,number,times)
-            if sign == '*':
+            x2=number        
+            # print(sign,model,number,times)
+
+            if sign == '*': # sign * 0 (number) == 0
                 nuvalue=max(0,int(x1*x2))
                 x1=nuvalue
-            elif sign == '-':
-                nuvalue=max(0,int(x1-x2))
-                x1=nuvalue
+            elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                if number == 0:
+                    x1=0
+                    continue
+                else:
+                    nuvalue=max(0,int(x1-x2))
+                    x1=nuvalue
             elif sign == '/':
                 nuvalue=max(0,int(x1/x2))
                 x1=nuvalue
