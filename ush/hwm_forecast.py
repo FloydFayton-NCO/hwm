@@ -41,7 +41,7 @@ for index, row in jsonctrl.iterrows():
             x1=i[0]['data'][:][-1][1]
             x2=number        
             # print(sign,model,number,times)
-
+            
             if sign == '*': # sign * 0 (number) == 0
                 nuvalue=max(0,int(x1*x2))
                 x1=nuvalue
