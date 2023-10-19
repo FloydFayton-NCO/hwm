@@ -26,6 +26,7 @@ jiif = open('cactus_daily_nid_nodes_p1.json','r')
 ctrl = open('parm/fcst_ctrl','r')
 data = j.load(jiif)
 jsonctrl = pd.read_csv(ctrl,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
+jsonctrl = jsonctrl.fillna("")
 
 #print(jsonctrl['model'][3])
 for index, row in jsonctrl.iterrows():
@@ -41,7 +42,7 @@ for index, row in jsonctrl.iterrows():
             x2=number
             if number == 0:
                 x1=0            
-            # print(sign,model,number,times) #,x2,x1)
+            print(sign,model,number,times)
             if sign == '*':
                 nuvalue=max(0,int(x1*x2))
                 x1=nuvalue
