@@ -14,20 +14,16 @@ import time
 from datetime import datetime, timedelta, date
 import os
 import numpy as np
-
-#setting vars, ii is wcossii
-#iifile = sys.argv[1]
-fcst_ctrl = os.environ["FCST_CTRL"]
-workdir = os.environ["DATA"] + '/'
-
-#jiif = open(iifile)
-import readline
-import json as j
-import numpy as np
 import pandas as pd
 
+# setting vars, ii is wcossii
+# iifile = sys.argv[1]
+# fcst_ctrl = os.environ["FCST_CTRL"]
+# workdir = os.environ["DATA"] + '/'
+#jiif = open(iifile)
+
 jiif = open('cactus_daily_nid_nodes_p1.json')
-ljsonf = j.load(jiif)
+data = j.load(jiif)
 ctrl = open('parm/fcst_ctrl','r')
 #lines = jctrl.readlines()
 jsonctrl = pd.read_csv(ctrl,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
@@ -39,19 +35,13 @@ for index, row in jsonctrl.iterrows():
     times=row['times']
 
     #addition, multiplicatio, division, or subtraction
-    for i in ljsonf:
+    for i in data:
         if model in i[0]['name']:
-            x1=i[0]['data'][:][1]
+            x1=i[0]['data'][:][-1][1]
             x2=number
-
-            #del model by zero'ing value in time,value lists
             if number == 0:
-                for t, v in i[0]['data']:
-                    x1=0
-        print(i[0]['data'][:][:1])
-)
-
-
+                x1=0            
+            print(model, x2,x1)
 
             if sign == '*':
                 #max nuvalue 0
