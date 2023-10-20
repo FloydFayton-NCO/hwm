@@ -8,10 +8,11 @@ __email__ = "floyd.fayton@noaa.gov"
 __status__ = "test"
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 import readline
-import sys, os
+import sys
 import json
 import re
 from datetime import datetime, timedelta, date
+import os
 import numpy as np
 import pandas as pd
 
@@ -87,7 +88,6 @@ infile = 'cactus_daily_nid_nodes_p1.json'
 # ctrlfile = os.environ["FCST_CTRL"]
 # workdir = os.environ["DATA"] + '/'
 ################################################
-
 hwm_modify(infile,ctrlfile)
 
 
