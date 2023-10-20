@@ -54,8 +54,7 @@ def hwm_modify(jsonfile,ctrl):
                 end=(datetime.strptime(ymdhm_e, "%Y%m%d%H%M").strftime("%s"))
                 s=(int(start) * 1000)
                 e=(int(end) * 1000)
-                print(s,e)
-                for i in range(s, 2000000, 60000):
+                for i in range(s, e, 60000):
                     print(i)
 
                 tarr.append(ranget)
