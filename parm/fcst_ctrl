@@ -2,9 +2,10 @@
 # always delete decomissioned models before array modifications
 
 + AQM-OPS 3045
-- HWRF-OPS 0
+
 + FLOYD-DEV 2000
 + RANDOM-T2O 3400
 + GFS-OPS 29
-# * GFS-OPS 29
-# / AQM-OPS 20 1230-1450,1800-1930
+* GFS-OPS 29
+/ AQM-OPS 20 1230-1450,1800-1930
+- HWRF-OPS 0

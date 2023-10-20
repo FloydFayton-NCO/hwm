@@ -16,6 +16,10 @@ import os
 import numpy as np
 import pandas as pd
 
+def err_exit(msg):
+    print(msg, file=stderr)
+    exit(1)
+
 def hwm_modify(jsonfile,ctrl):
     with open(ctrl,'r') as cfile:
         jsonctrl = pd.read_csv(cfile,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
@@ -42,8 +46,7 @@ def hwm_modify(jsonfile,ctrl):
             newmodel = json.dumps([{"name":model,"data":modelDat}],indent=4,sort_keys=False)
             poo=json.loads(newmodel)
             data.append(poo)
-            #reset vars with updated data
-            data_str = re.sub(r'[\[\]]', '', str(data)) 
+            data_str = re.sub(r'[\[\]]', '', str(data)) #reset vars with updated data
             modelfound=re.findall("\'"+model+"\'", data_str)
 
         for row in data:
@@ -57,8 +60,7 @@ def hwm_modify(jsonfile,ctrl):
                         row[0]['data'][:][i][-1]=nuvalue
                     elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
                         if number == 0:
-                            x1=0
-                            continue
+                            row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
                         else:
                             nuvalue=max(0,int(x1-number))
                             row[0]['data'][:][i][-1]=nuvalue
@@ -69,11 +71,9 @@ def hwm_modify(jsonfile,ctrl):
                         nuvalue=max(0,int(x1+number))
                         row[0]['data'][:][i][-1]=nuvalue
                     else:
-                        print('operand not detected, please fix $PARMhwm/fcst_ctrl file')
-                        continue
-                    # print(model,number,x1)
-                    result=row[0]['data'][:][i][-1]
-                    print(model,result)
+                        err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                    # result=row[0]['data'][:][i][-1] # Debug math
+                    # print(model,result)
                     # print(x1," ",sign," ",number,"=",result,"\n") # math test FAFJ
 
     with open('new.json','w') as final:
