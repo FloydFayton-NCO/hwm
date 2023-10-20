@@ -79,13 +79,16 @@ def hwm_modify(jsonfile,ctrl):
     with open('hwm_fcst_nid_nodes_p1.json','w') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
 
+################ TESTING INPUTS ################
 ctrlfile = 'parm/fcst_ctrl'
 infile = 'cactus_daily_nid_nodes_p1.json'
+################################################
 
-# infile = os.environ["origfile"]
+################ PRODUCTION INPUTS #############
+# infile = os.environ["IJSON"]
 # ctrlfile = os.environ["FCST_CTRL"]
 # workdir = os.environ["DATA"] + '/'
-
+################################################
 hwm_modify(infile,ctrlfile)
 
 

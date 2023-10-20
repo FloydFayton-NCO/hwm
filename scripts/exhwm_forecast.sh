@@ -12,21 +12,21 @@ start=`date +%s.%N`
 if [ -s "$COMIN/$live" ]; then
    echo "final combined file $live exists and is not empty, copying to $DATA"
    cpreq $COMIN/${live} $DATA/${live}
-   origfile=${DATA}/${live}
+   IJSON=${IJSON:-${DATA}/${live}}
 elif [ -s "$COMINy/$daily" ]; then
    echo "final combined file $daily exists and is not empty, copying to $DATA"
    cpreq $COMIN/${daily} $DATA/${daily}  
-   origfile=${DATA}/${daily}
+   IJSON=${IJSON:-${DATA}/${daily}}
 elif [ -s "$live" ]; then
    echo "non-system file $live exists and is not empty, copying to $DATA"
    cpreq ${live} $DATA/${live}
-   origfile=${DATA}/${live}
+   IJSON=${IJSON:-${DATA}/${live}}
 else
    echo "final combined file, live or daily, does not exist, and is not empty, not copying to $DATA"
    err_exit
 fi
 
-${USHhwm}/hwm_forecast.py ${origfile}
+${USHhwm}/hwm_forecast.py
 export err=$?; err_chk
 
 end=$(date +%s.%N)
