@@ -43,8 +43,8 @@ def new_value(data,model,sign,number,times):
                     row[0]['data'][:][i][-1]=nuvalue
                 else:
                     err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
-                result=row[0]['data'][:][i][-1] # Debug math
-                print(model,result)
+                # result=row[0]['data'][:][i][-1] # Debug math
+                # print(model,result)
                 # print(x1," ",sign," ",number,"=",result,"\n") # math test FAFJ
 
 def hwm_modify(jsonfile,ctrl):
