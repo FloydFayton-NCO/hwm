@@ -41,11 +41,12 @@ def hwm_modify(jsonfile,ctrl):
         # #work in progress##########################
         if times != "0":
             split=times.split(sep=",",maxsplit=-1)
-            print(split)
-            for idx,trange in enumerate(split):
-                trange=trange.split(sep="-")
-                tarr.append(trange)
-                print(tarr)
+            for idx,ranget in enumerate(split):
+                ranget=ranget.split(sep="-")
+                print(ranget[0])
+                tarr.append(ranget)
+                print(idx)
+                print(tarr[idx][0])
         # # work in progress##########################
 
 
