@@ -54,7 +54,6 @@ def hwm_modify(jsonfile,ctrl):
             if mfound:
                 for i in range(0,1439):
                     x1=row[0]['data'][:][i][-1]
-                    print(model,x1)
                     if sign == '*': # sign * 0 (number) == 0
                         nuvalue=max(0,int(x1*number))
                         row[0]['data'][:][i][-1]=nuvalue
