@@ -17,8 +17,8 @@ import numpy as np
 import pandas as pd
 
 def err_exit(msg):
-    print(msg, file=stderr)
-    exit(1)
+    print(msg, file=sys.stderr)
+    sys.exit(1)
 
 def hwm_modify(jsonfile,ctrl):
     with open(ctrl,'r') as cfile:
@@ -76,7 +76,7 @@ def hwm_modify(jsonfile,ctrl):
                     # print(model,result)
                     # print(x1," ",sign," ",number,"=",result,"\n") # math test FAFJ
 
-    with open('new.json','w') as final:
+    with open('hwm_fcst_nid_nodes_p1.json','w') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
 
 ctrlfile = 'parm/fcst_ctrl'
