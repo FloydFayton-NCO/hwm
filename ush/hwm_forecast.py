@@ -47,9 +47,6 @@ def hwm_modify(jsonfile,ctrl):
         data_str = re.sub(r'[\[\]]', '', str(data)) 
         modelfound=re.findall("\'"+model+"\'", data_str)
 
-        # if modelfound:
-        #     print(model)
-
         for row in data:
             # modelfound=re.fullmatch(model, row[0]['name'])
             if modelfound:
@@ -75,8 +72,8 @@ def hwm_modify(jsonfile,ctrl):
                     # else:
                     #     print('operand not detected, please fix $PARMhwm/fcst_ctrl file')
                     #     continue
-                    # result=row[0]['data'][:][i][-1]
-                    # print(x1," ",sign," ",x2,"=",result,"\n") # math test FAFJ
+                    result=row[0]['data'][:][i][-1]
+                    print(x1," ",sign," ",x2,"=",result,"\n") # math test FAFJ
 
     with open('new.json','w') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
