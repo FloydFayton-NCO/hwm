@@ -20,6 +20,33 @@ def err_exit(msg):
     print(msg, file=sys.stderr)
     sys.exit(1)
 
+def new_value(data,model,sign,number,times):
+    for row in data:
+        mfound=re.fullmatch(model, row[0]['name'])
+        if mfound:
+            for i in range(0,1439):
+                x1=row[0]['data'][:][i][-1]
+                if sign == '*': # sign * 0 (number) == 0
+                    nuvalue=max(0,int(x1*number))
+                    row[0]['data'][:][i][-1]=nuvalue
+                elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                    if number == 0:
+                        row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
+                    else:
+                        nuvalue=max(0,int(x1-number))
+                        row[0]['data'][:][i][-1]=nuvalue
+                elif sign == '/':
+                    nuvalue=max(0,int(x1/number))
+                    row[0]['data'][:][i][-1]=nuvalue
+                elif sign == '+':
+                    nuvalue=max(0,int(x1+number))
+                    row[0]['data'][:][i][-1]=nuvalue
+                else:
+                    err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                result=row[0]['data'][:][i][-1] # Debug math
+                print(model,result)
+                # print(x1," ",sign," ",number,"=",result,"\n") # math test FAFJ
+
 def hwm_modify(jsonfile,ctrl):
     with open(ctrl,'r') as cfile:
         jsonctrl = pd.read_csv(cfile,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
@@ -38,14 +65,14 @@ def hwm_modify(jsonfile,ctrl):
         times=cow['times']
         tarr=[] #time array not integrated yet
 
-        # #work in progress##########################
+###### timeseries changes work in progress ##########################
         if times != "0":
             split=times.split(sep=",",maxsplit=-1)
 
             epoch_infile=int(data[0][:][0]['data'][0][0]/1000)
             epoch=datetime.fromtimestamp(epoch_infile)
             epoch=epoch.strftime("%Y%m%d")
-            
+
             for idx,ranget in enumerate(split):
                 ranget=ranget.split(sep="-") #rm dash, split numbers into list elements
                 ymdhm_s="".join([epoch,ranget[0]])
@@ -54,15 +81,12 @@ def hwm_modify(jsonfile,ctrl):
                 end=(datetime.strptime(ymdhm_e, "%Y%m%d%H%M").strftime("%s"))
                 s=(int(start) * 1000)
                 e=(int(end) * 1000)
-                for i in range(s, e, 60000):
-                    print(i)
+                for t in range(s, e, 60000):
+                    if t == "data[0][:][0]['data'][0][0]":
+                        print(e)
 
                 tarr.append(ranget)
-                # print(idx)
-                # print(tarr[idx][0])
-
-        # # work in progress##########################
-
+###### timeseries changes work in progress ##########################
 
         if not modelfound:
             xbegin=data[0][:][0]['data'][0][0]
@@ -76,31 +100,7 @@ def hwm_modify(jsonfile,ctrl):
             data_str = re.sub(r'[\[\]]', '', str(data)) #reset vars with updated data
             modelfound=re.findall("\'"+model+"\'", data_str)
 
-        for row in data:
-            mfound=re.fullmatch(model, row[0]['name'])
-            if mfound:
-                for i in range(0,1439):
-                    x1=row[0]['data'][:][i][-1]
-                    if sign == '*': # sign * 0 (number) == 0
-                        nuvalue=max(0,int(x1*number))
-                        row[0]['data'][:][i][-1]=nuvalue
-                    elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
-                        if number == 0:
-                            row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
-                        else:
-                            nuvalue=max(0,int(x1-number))
-                            row[0]['data'][:][i][-1]=nuvalue
-                    elif sign == '/':
-                        nuvalue=max(0,int(x1/number))
-                        row[0]['data'][:][i][-1]=nuvalue
-                    elif sign == '+':
-                        nuvalue=max(0,int(x1+number))
-                        row[0]['data'][:][i][-1]=nuvalue
-                    else:
-                        err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
-                    # result=row[0]['data'][:][i][-1] # Debug math
-                    # print(model,result)
-                    # print(x1," ",sign," ",number,"=",result,"\n") # math test FAFJ
+        new_value(data,model,sign,number,times)
 
     with open('hwm_fcst_nid_nodes_p1.json','w') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
