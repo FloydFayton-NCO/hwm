@@ -35,7 +35,16 @@ def hwm_modify(jsonfile,ctrl):
         model=cow['model']
         modelfound=re.findall("\'"+model+"\'", data_str)
         number=int(cow['number'])
-        times=cow['times'] #not integrated yet
+        times=cow['times'] ; tarr=[] #not integrated yet
+        # #work in progress##########################
+        if times != "0":
+            split=times.split(sep=",",maxsplit=-1)
+            for idx,trange in enumerate(split):
+                trange=trange.split(sep="-")
+                tarr.append(trange)
+        print(tarr)
+        # # work in progress##########################
+
 
         if not modelfound:
             xbegin=data[0][:][0]['data'][0][0]
