@@ -8,16 +8,19 @@ echo "starttime= `date`"
 start=`date +%s.%N`
 
 # Copy original/current HWM chart to $DATA for modification
-live  = live_${res}_${rescount}_p1.json 
-daily = daily_${res}_${rescount}_p1.json
+
 if [ -s "$COMIN/$live" ]; then
    echo "final combined file $live exists and is not empty, copying to $DATA"
    cpreq $COMIN/${live} $DATA/${live}
-   origfile=${DATA}/$live
+   origfile=${DATA}/${live}
 elif [ -s "$COMINy/$daily" ]; then
    echo "final combined file $daily exists and is not empty, copying to $DATA"
    cpreq $COMIN/${daily} $DATA/${daily}  
    origfile=${DATA}/${daily}
+elif [ -s "$live" ]; then
+   echo "non-system file $live exists and is not empty, copying to $DATA"
+   cpreq ${live} $DATA/${live}
+   origfile=${DATA}/${live}
 else
    echo "final combined file, live or daily, does not exist, and is not empty, not copying to $DATA"
    err_exit

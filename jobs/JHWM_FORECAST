@@ -58,6 +58,8 @@ fi
 
 # Control file determines which modifications are made by model
 export FCST_CTRL='${FCST_CTRL:-${PARMhwm}/fcst_ctrl}'
+export live='${live:-live_${res}_${rescount}_p1.json}'
+export daily='${daily:-daily_${res}_${rescount}_p1.json}'
 
 ##############################################
 # Execute the script

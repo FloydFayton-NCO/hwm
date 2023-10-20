@@ -82,9 +82,8 @@ def hwm_modify(jsonfile,ctrl):
 ctrlfile = 'parm/fcst_ctrl'
 infile = 'cactus_daily_nid_nodes_p1.json'
 
-# ctrl = sys.argv[2]
-# infile = sys.argv[1]
-# fcst_ctrl = os.environ["FCST_CTRL"]
+# infile = os.environ["origfile"]
+# ctrlfile = os.environ["FCST_CTRL"]
 # workdir = os.environ["DATA"] + '/'
 
 hwm_modify(infile,ctrlfile)
