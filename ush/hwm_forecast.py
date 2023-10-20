@@ -41,12 +41,27 @@ def hwm_modify(jsonfile,ctrl):
         # #work in progress##########################
         if times != "0":
             split=times.split(sep=",",maxsplit=-1)
+
+            epoch_infile=int(data[0][:][0]['data'][0][0]/1000)
+            epoch=datetime.fromtimestamp(epoch_infile)
+            epoch=epoch.strftime("%Y%m%d")
+            
             for idx,ranget in enumerate(split):
-                ranget=ranget.split(sep="-")
-                print(ranget[0])
+                ranget=ranget.split(sep="-") #rm dash, split numbers into list elements
+                ymdhm_s="".join([epoch,ranget[0]])
+                ymdhm_e="".join([epoch,ranget[1]])
+                start=(datetime.strptime(ymdhm_s, "%Y%m%d%H%M").strftime("%s"))
+                end=(datetime.strptime(ymdhm_e, "%Y%m%d%H%M").strftime("%s"))
+                s=(int(start) * 1000)
+                e=(int(end) * 1000)
+                print(s,e)
+                for i in range(s, 2000000, 60000):
+                    print(i)
+
                 tarr.append(ranget)
-                print(idx)
-                print(tarr[idx][0])
+                # print(idx)
+                # print(tarr[idx][0])
+
         # # work in progress##########################
 
 
