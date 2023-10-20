@@ -42,12 +42,29 @@ def new_value(data,model,sign,number,times):
                         end=(datetime.strptime(ymdhm_e, "%Y%m%d%H%M").strftime("%s"))
                         s=(int(start) * 1000)
                         e=(int(end) * 1000)
-                        # print(data[0][:][0]['data'][0][0])
-                        # for t in range(s, e, 60000):
-                        #     if t == "data[0][:][0]['data'][0][0]":
-                        #         print(e,data[0][:][0]['data'][0][0])
                         tarr.append(ranget)
-                    print(row[0]['data'][:][i][0])
+
+                        for t in range(s, e, 60000):
+                            # print(type(t),type(row[0]['data'][:][i][0]))
+                            if t == row[0]['data'][:][i][0]:
+                                x1=row[0]['data'][:][i][-1]
+                                if sign == '*': # sign * 0 (number) == 0
+                                    nuvalue=max(0,int(x1*number))
+                                    row[0]['data'][:][i][-1]=nuvalue
+                                elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                                    if number == 0:
+                                        row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
+                                    else:
+                                        nuvalue=max(0,int(x1-number))
+                                        row[0]['data'][:][i][-1]=nuvalue
+                                elif sign == '/':
+                                    nuvalue=max(0,int(x1/number))
+                                    row[0]['data'][:][i][-1]=nuvalue
+                                elif sign == '+':
+                                    nuvalue=max(0,int(x1+number))
+                                    row[0]['data'][:][i][-1]=nuvalue
+                                else:
+                                    err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
                 else:
                     x1=row[0]['data'][:][i][-1]
                     if sign == '*': # sign * 0 (number) == 0
