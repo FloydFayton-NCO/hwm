@@ -42,38 +42,39 @@ def hwm_modify(jsonfile,ctrl):
             newmodel = json.dumps([{"name":model,"data":modelDat}],indent=4,sort_keys=False)
             poo=json.loads(newmodel)
             data.append(poo)
-
-        #reset vars with updated data
-        data_str = re.sub(r'[\[\]]', '', str(data)) 
-        modelfound=re.findall("\'"+model+"\'", data_str)
+            #reset vars with updated data
+            data_str = re.sub(r'[\[\]]', '', str(data)) 
+            modelfound=re.findall("\'"+model+"\'", data_str)
 
         for row in data:
-            # modelfound=re.fullmatch(model, row[0]['name'])
-            if modelfound:
+            mfound=re.fullmatch(model, row[0]['name'])
+            if mfound:
                 for i in range(0,1439):
                     x1=row[0]['data'][:][i][-1]
-                    x2=number
-                    # if sign == '*': # sign * 0 (number) == 0
-                    #     nuvalue=max(0,int(x1*x2))
-                    #     row[0]['data'][:][i][-1]=nuvalue
-                    # elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
-                    #     if number == 0:
-                    #         x1=0
-                    #         continue
-                    #     else:
-                    #         nuvalue=max(0,int(x1-x2))
-                    #         row[0]['data'][:][i][-1]=nuvalue
-                    # elif sign == '/':
-                    #     nuvalue=max(0,int(x1/x2))
-                    #     row[0]['data'][:][i][-1]=nuvalue
-                    # elif sign == '+':
-                    #     nuvalue=max(0,int(x1+x2))
-                    #     row[0]['data'][:][i][-1]=nuvalue
-                    # else:
-                    #     print('operand not detected, please fix $PARMhwm/fcst_ctrl file')
-                    #     continue
+                    print(model,x1)
+                    if sign == '*': # sign * 0 (number) == 0
+                        nuvalue=max(0,int(x1*number))
+                        row[0]['data'][:][i][-1]=nuvalue
+                    elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                        if number == 0:
+                            x1=0
+                            continue
+                        else:
+                            nuvalue=max(0,int(x1-number))
+                            row[0]['data'][:][i][-1]=nuvalue
+                    elif sign == '/':
+                        nuvalue=max(0,int(x1/number))
+                        row[0]['data'][:][i][-1]=nuvalue
+                    elif sign == '+':
+                        nuvalue=max(0,int(x1+number))
+                        row[0]['data'][:][i][-1]=nuvalue
+                    else:
+                        print('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                        continue
+                    # print(model,number,x1)
                     result=row[0]['data'][:][i][-1]
-                    print(x1," ",sign," ",x2,"=",result,"\n") # math test FAFJ
+                    print(model,result)
+                    # print(x1," ",sign," ",number,"=",result,"\n") # math test FAFJ
 
     with open('new.json','w') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
