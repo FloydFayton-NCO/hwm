@@ -8,11 +8,10 @@ __email__ = "floyd.fayton@noaa.gov"
 __status__ = "test"
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 import readline
-import sys
+import sys, os
 import json
 import re
 from datetime import datetime, timedelta, date
-import os
 import numpy as np
 import pandas as pd
 

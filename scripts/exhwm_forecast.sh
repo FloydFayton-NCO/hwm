@@ -17,9 +17,8 @@ elif [ -s "$COMINy/$daily" ]; then
    echo "final combined file $daily exists and is not empty, copying to $DATA"
    cpreq $COMIN/${daily} $DATA/${daily}  
    IJSON=${IJSON:-${DATA}/${daily}}
-elif [ -s "$live" ]; then
-   echo "non-system file $live exists and is not empty, copying to $DATA"
-   cpreq ${live} $DATA/${live}
+elif [ -s "$IJSON" ]; then #local/non-system control file
+   echo "non-system file $IJSON exists and is not empty, copying to $DATA"
    IJSON=${IJSON:-${DATA}/${live}}
 else
    echo "final combined file, live or daily, does not exist, and is not empty, not copying to $DATA"
