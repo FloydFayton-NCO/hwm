@@ -36,6 +36,7 @@ def hwm_modify(jsonfile,ctrl):
         modelfound=re.findall("\'"+model+"\'", data_str)
         number=int(cow['number'])
         times=cow['times'] ; tarr=[] #not integrated yet
+        
         # #work in progress##########################
         if times != "0":
             split=times.split(sep=",",maxsplit=-1)
