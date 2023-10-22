@@ -1,2 +1,2 @@
 # hwm
-<img src='hwm-progress-features-beta.png' width='100'>
+<img src='hwm-progress-features-beta.png' width='300'>
