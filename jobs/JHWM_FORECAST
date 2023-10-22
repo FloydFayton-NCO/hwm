@@ -56,7 +56,7 @@ if [ ! -f $COMOUTy ] ; then
     mkdir -m 775 -p $COMOUTy $COMOUTnwgesy
 fi
 
-#TESTING LOCALLY
+#TESTING HWM_FORECAST LOCALLY
 export FCST_CTRL='parm/fcst_ctrl'
 export IJSON='cactus_daily_nid_nodes_p1.json'
 
