@@ -24,6 +24,7 @@ suite para
               defstatus complete              
               edit FCST_CTRL ''
               edit IJSON ''
+              edit OJSON ''
               edit DAILY ''
           endfamily
           family nid_cores

@@ -7,6 +7,7 @@ echo "EXHWM FORECAST ${res} ${rescount^^} SCRIPT EXECUTION"
 echo "starttime= `date`"
 start=`date +%s.%N`
 
+#find input data
 if [ -s "$live" ]; then #non-production control file
    echo "non-production file $IJSON exists and is not empty, copying to $DATA"
    cpreq ${live} $DATA/${live}
@@ -29,6 +30,7 @@ export err=$?; err_chk
 
 cpreq $DATA/hwm_*.json $COMOUT/
 
+#rsync to intra
 function rsync_sh {
    source=$1
    dest=$2

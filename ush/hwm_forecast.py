@@ -21,51 +21,50 @@ def err_exit(msg):
     sys.exit(1)
 
 def new_value(data,model,sign,number,times):
-    tarr=[]
-    for row in data:
-        mfound=re.fullmatch(model, row[0]['name'])
-        if mfound:
-            for i in range(0,1439):
-                    ###### timeseries changes work in progress ##########################
-                if times != "0":
-                    split=times.split(sep=",",maxsplit=-1)
-
-                    epoch_infile=int(data[0][:][0]['data'][0][0]/1000)
-                    epoch=datetime.fromtimestamp(epoch_infile)
-                    epoch=epoch.strftime("%Y%m%d")
-
-                    for idx,ranget in enumerate(split):
-                        ranget=ranget.split(sep="-") #rm dash, split numbers into list elements
-                        ymdhm_s="".join([epoch,ranget[0]])
-                        ymdhm_e="".join([epoch,ranget[1]])
-                        start=(datetime.strptime(ymdhm_s, "%Y%m%d%H%M").strftime("%s"))
-                        end=(datetime.strptime(ymdhm_e, "%Y%m%d%H%M").strftime("%s"))
-                        s=(int(start) * 1000)
-                        e=(int(end) * 1000)
-                        tarr.append(ranget)
-
-                        for t in range(s, e, 60000):
-                            # print(type(t),type(row[0]['data'][:][i][0]))
-                            if t == row[0]['data'][:][i][0]:
-                                x1=row[0]['data'][:][i][-1]
-                                if sign == '*': # sign * 0 (number) == 0
-                                    nuvalue=max(0,int(x1*number))
+    if times != "0":
+        tarr=[]
+        split=times.split(sep=",",maxsplit=-1)
+        epoch_zero=int(data[0][:][0]['data'][0][0]/1000)
+        epoch=datetime.fromtimestamp(epoch_zero)
+        epoch=epoch.strftime("%Y%m%d")
+        for idx,ranget in enumerate(split):
+            ranget=ranget.split(sep="-") #rm dash, split numbers into list elements
+            ymdhm_s="".join([epoch,ranget[0]])
+            ymdhm_e="".join([epoch,ranget[1]])
+            start=(datetime.strptime(ymdhm_s, "%Y%m%d%H%M").strftime("%s"))
+            end=(datetime.strptime(ymdhm_e, "%Y%m%d%H%M").strftime("%s"))
+            s=(int(start) * 1000)
+            e=(int(end) * 1000)
+            tarr.append(ranget)
+        for row in data:
+            mfound=re.fullmatch(model, row[0]['name'])
+            if mfound:
+                for t in range(s, e, 60000):
+                    for i in range(0,1439):
+                        x1=row[0]['data'][:][i][-1]
+                        if t == row[0]['data'][:][i][0]:
+                            if sign == '*': # sign * 0 (number) == 0
+                                nuvalue=max(0,int(x1*number))
+                                row[0]['data'][:][i][-1]=nuvalue
+                            elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                                if number == 0:
+                                    row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
+                                else:
+                                    nuvalue=max(0,int(x1-number))
                                     row[0]['data'][:][i][-1]=nuvalue
-                                elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
-                                    if number == 0:
-                                        row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
-                                    else:
-                                        nuvalue=max(0,int(x1-number))
-                                        row[0]['data'][:][i][-1]=nuvalue
-                                elif sign == '/':
+                            elif sign == '/':
                                     nuvalue=max(0,int(x1/number))
                                     row[0]['data'][:][i][-1]=nuvalue
-                                elif sign == '+':
+                            elif sign == '+':
                                     nuvalue=max(0,int(x1+number))
                                     row[0]['data'][:][i][-1]=nuvalue
-                                else:
+                            else:
                                     err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
-                else:
+    else:
+        for row in data:
+            mfound=re.fullmatch(model, row[0]['name'])
+            if mfound:
+                for i in range(0,1439):
                     x1=row[0]['data'][:][i][-1]
                     if sign == '*': # sign * 0 (number) == 0
                         nuvalue=max(0,int(x1*number))
@@ -128,7 +127,7 @@ outfile = 'hwm_fcst_nid_nodes_p1.json'
 ################ PRODUCTION INPUTS #############
 # infile = os.environ["IJSON"]
 # ctrlfile = os.environ["FCST_CTRL"]
-# outfile = "os.environ["DATA"] + '/' + 'hwm_fcst_nid_nodes_p1.json'"
+# outfile = "os.environ["DATA"] + '/' + os.environ["OJSON"]"
 ################################################
 hwm_modify(infile,ctrlfile,outfile)
 
