@@ -7,9 +7,11 @@ echo "EXHWM FORECAST ${res} ${rescount^^} SCRIPT EXECUTION"
 echo "starttime= `date`"
 start=`date +%s.%N`
 
-# Copy original/current HWM chart to $DATA for modification
-
-if [ -s "$COMIN/$live" ]; then
+if [ -s "$live" ]; then #non-production control file
+   echo "non-production file $IJSON exists and is not empty, copying to $DATA"
+   cpreq ${live} $DATA/${live}
+   IJSON=${IJSON:-${DATA}/${live}}
+elif [ -s "$COMIN/$live" ]; then
    echo "final combined file $live exists and is not empty, copying to $DATA"
    cpreq $COMIN/${live} $DATA/${live}
    IJSON=${IJSON:-${DATA}/${live}}
@@ -17,18 +19,15 @@ elif [ -s "$COMINy/$daily" ]; then
    echo "final combined file $daily exists and is not empty, copying to $DATA"
    cpreq $COMIN/${daily} $DATA/${daily}  
    IJSON=${IJSON:-${DATA}/${daily}}
-elif [ -s "$IJSON" ]; then #local/non-system control file
-   echo "non-system file $IJSON exists and is not empty, copying to $DATA"
-   IJSON=${IJSON:-${DATA}/${live}}
 else
-   echo "final combined file, live or daily, does not exist, and is not empty, not copying to $DATA"
+   echo "final combined json file, live, daily, or custom, does not exist, and is not empty, not copying to $DATA"
    err_exit
 fi
 
 ${USHhwm}/hwm_forecast.py
 export err=$?; err_chk
 
-cpreq $DATA/hwm_*.json $COMOUTnwges/
+cpreq $DATA/hwm_*.json $COMOUT/
 
 function rsync_sh {
    source=$1

@@ -84,11 +84,8 @@ def new_value(data,model,sign,number,times):
                         row[0]['data'][:][i][-1]=nuvalue
                     else:
                         err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
-                # result=row[0]['data'][:][i][-1] # Debug math
-                # print(model,result)
-                # print(x1," ",sign," ",number,"=",result,"\n") # math test FAFJ
 
-def hwm_modify(jsonfile,ctrl):
+def hwm_modify(jsonfile,ctrl,nufile):
     with open(ctrl,'r') as cfile:
         jsonctrl = pd.read_csv(cfile,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
         jsonctrl = jsonctrl.fillna("0") # no NaNs or empty fields, last two fields in control have to be integers
@@ -119,20 +116,21 @@ def hwm_modify(jsonfile,ctrl):
 
         new_value(data,model,sign,number,times)
 
-    with open('hwm_fcst_nid_nodes_p1.json','w') as final:
+    with open(nufile,'w') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
 
 ################ TESTING INPUTS ################
-ctrlfile = 'parm/fcst_ctrl'
 infile = 'cactus_daily_nid_nodes_p1.json'
+ctrlfile = 'parm/fcst_ctrl'
+outfile = 'hwm_fcst_nid_nodes_p1.json'
 ################################################
 
 ################ PRODUCTION INPUTS #############
 # infile = os.environ["IJSON"]
 # ctrlfile = os.environ["FCST_CTRL"]
-# workdir = os.environ["DATA"] + '/'
+# outfile = "os.environ["DATA"] + '/' + 'hwm_fcst_nid_nodes_p1.json'"
 ################################################
-hwm_modify(infile,ctrlfile)
+hwm_modify(infile,ctrlfile,outfile)
 
 
 

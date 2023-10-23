@@ -26,7 +26,9 @@ set -x
 task=%TASK%
 export rescount="${task:17}"
 export res="${task:13:3}"
-export FCST_CTRL=%FCST_CTRL%
+export FCST_CTRL=%FCST_CTRL% 
+export IJSON=%IJSON% 
+export DAILY=%DAILY% 
 
 ${HOMEhwm}/jobs/JHWM_FORECAST 
 

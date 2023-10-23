@@ -57,13 +57,13 @@ if [ ! -f $COMOUTy ] ; then
 fi
 
 #TESTING HWM_FORECAST LOCALLY
-export FCST_CTRL='parm/fcst_ctrl'
-export IJSON='cactus_daily_nid_nodes_p1.json'
+#export FCST_CTRL='parm/fcst_ctrl'
+#export IJSON='cactus_daily_nid_nodes_p1.json'
 
 # Control file determines which modifications are made by model
 export FCST_CTRL='${FCST_CTRL:-${PARMhwm}/fcst_ctrl}'
-export live='${live:-live_${res}_${rescount}_p1.json}'
-export daily='${daily:-daily_${res}_${rescount}_p1.json}'
+export live='${IJSON:-live_${res}_${rescount}_p1.json}'
+export daily='${DAILY:-daily_${res}_${rescount}_p1.json}'
 
 ##############################################
 # Execute the script
