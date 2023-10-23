@@ -14,9 +14,9 @@ from datetime import datetime, timezone
 import os
 import pandas as pd
 
-datetime.now(timezone.utc) 
+datetime.now(timezone.utc)
 
-def err_exit(msg):  
+def err_exit(msg):
     """Leaving this script hastily"""
     print(msg, file=sys.stderr)
     sys.exit(1)
@@ -39,7 +39,6 @@ def new_value(data,model,sign,number,times):  #generates new values by time
             """.utc is critical for start/end"""
             start=int(start.replace(tzinfo=timezone.utc).timestamp() * 1000)
             end=int(end.replace(tzinfo=timezone.utc).timestamp() * 1000)
-            
             tarr.append(ranget)
             for row in data:
                 mfound=re.fullmatch(model, row[0]['name'])
