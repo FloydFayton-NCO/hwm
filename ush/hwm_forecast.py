@@ -14,8 +14,6 @@ from datetime import datetime, timezone
 import os
 import pandas as pd
 
-datetime.now(timezone.utc)
-
 def mathing(sign, number, row, x1, i):
     """Math by sign"""
     if sign == "*":  # sign * 0 (number) == 0
