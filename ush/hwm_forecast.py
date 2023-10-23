@@ -16,11 +16,13 @@ import pandas as pd
 
 datetime.now(timezone.utc) 
 
-def err_exit(msg):
+def err_exit(msg):  
+    """Leaving this script hastily"""
     print(msg, file=sys.stderr)
     sys.exit(1)
 
-def new_value(data,model,sign,number,times):
+def new_value(data,model,sign,number,times):  #generates new values by time
+    """Generating new values by time values, or entire chart""" 
     if times != "0":
         tarr=[]
         split=times.split(sep=",",maxsplit=-1)
@@ -46,9 +48,9 @@ def new_value(data,model,sign,number,times):
                                 if sign == '*': # sign * 0 (number) == 0
                                     nuvalue=max(0,int(x1*number))
                                     row[0]['data'][:][i][-1]=nuvalue
-                                elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                                elif sign == '-': # double meaning if number is 0 or empty
                                     if number == 0:
-                                        row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
+                                        row[0]['data'][:][i][-1]=0 # value to zero since x1-0
                                     else:
                                         nuvalue=max(0,int(x1-number))
                                         row[0]['data'][:][i][-1]=nuvalue
@@ -59,7 +61,8 @@ def new_value(data,model,sign,number,times):
                                     nuvalue=max(0,int(x1+number))
                                     row[0]['data'][:][i][-1]=nuvalue
                                 else:
-                                    err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                                    err_exit('operand not detected, \
+                                        please fix $PARMhwm/fcst_ctrl file')
     else:
         for row in data:
             mfound=re.fullmatch(model, row[0]['name'])
@@ -69,9 +72,9 @@ def new_value(data,model,sign,number,times):
                     if sign == '*': # sign * 0 (number) == 0
                         nuvalue=max(0,int(x1*number))
                         row[0]['data'][:][i][-1]=nuvalue
-                    elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                    elif sign == '-': # double meaning if number is 0 or empty
                         if number == 0:
-                            row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
+                            row[0]['data'][:][i][-1]=0 # svalue to zero since x1-0 
                         else:
                             nuvalue=max(0,int(x1-number))
                             row[0]['data'][:][i][-1]=nuvalue
@@ -85,9 +88,15 @@ def new_value(data,model,sign,number,times):
                         err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
 
 def hwm_modify(jsonfile,ctrl,nufile):
+    """Main script to start modification of existing file"""
     with open(ctrl,'r',encoding="utf-8") as cfile:
-        jsonctrl = pd.read_csv(cfile,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
-        jsonctrl = jsonctrl.fillna("0") # no NaNs or empty fields, last two fields in control have to be integers
+        jsonctrl = pd.read_csv(cfile,
+            sep=" ",
+            comment="#",
+            header=None,
+            skip_blank_lines=True,
+            names=['sign','model','number','times'])
+        jsonctrl = jsonctrl.fillna("0") # no NaNs or empty fields,
 
     with open(jsonfile,'r',encoding="utf-8") as jfile:
         data = json.load(jfile)
@@ -117,7 +126,8 @@ def hwm_modify(jsonfile,ctrl,nufile):
 
     with open(nufile,'w', encoding='utf-8') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
-        
+
+
 ################ TESTING INPUTS ################
 infile = 'cactus_daily_nid_nodes_p1.json'
 ctrlfile = 'parm/fcst_ctrl'
@@ -132,6 +142,3 @@ outfile = 'hwm_fcst_nid_nodes_p1.json'
 
 hwm_modify(infile,ctrlfile,outfile)
 os.listdir(path='.')
-
-
-
