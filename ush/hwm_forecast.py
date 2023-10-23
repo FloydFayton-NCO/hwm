@@ -126,7 +126,6 @@ def hwm_modify(jsonfile, ctrl, nufile):
     with open(nufile, "w", encoding="utf-8") as final:
         final.write(json.dumps(data, indent=4, sort_keys=False))
 
-
 ################ TESTING INPUTS ################
 infile = "cactus_daily_nid_nodes_p1.json"
 ctrlfile = "parm/fcst_ctrl"
