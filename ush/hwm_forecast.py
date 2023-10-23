@@ -11,10 +11,12 @@ import readline
 import sys
 import json
 import re
-from datetime import datetime, timedelta, date
+from datetime import datetime, timezone
 import os
 import numpy as np
 import pandas as pd
+
+datetime.now(timezone.utc) 
 
 def err_exit(msg):
     print(msg, file=sys.stderr)
@@ -25,41 +27,41 @@ def new_value(data,model,sign,number,times):
         tarr=[]
         split=times.split(sep=",",maxsplit=-1)
         epoch_zero=int(data[0][:][0]['data'][0][0]/1000)
-        epoch=datetime.fromtimestamp(epoch_zero)
+        epoch=datetime.utcfromtimestamp(epoch_zero)
         epoch=epoch.strftime("%Y%m%d")
         for idx,ranget in enumerate(split):
             ranget=ranget.split(sep="-") #rm dash, split numbers into list elements
             ymdhm_s="".join([epoch,ranget[0]])
             ymdhm_e="".join([epoch,ranget[1]])
-            start=(datetime.strptime(ymdhm_s, "%Y%m%d%H%M").strftime("%s"))
-            end=(datetime.strptime(ymdhm_e, "%Y%m%d%H%M").strftime("%s"))
-            s=(int(start) * 1000)
-            e=(int(end) * 1000)
+            start=datetime.strptime(ymdhm_s,"%Y%m%d%H%M")
+            end=datetime.strptime(ymdhm_e, "%Y%m%d%H%M")
+            start=int(start.replace(tzinfo=timezone.utc).timestamp() * 1000)
+            end=int(end.replace(tzinfo=timezone.utc).timestamp() * 1000)
             tarr.append(ranget)
-        for row in data:
-            mfound=re.fullmatch(model, row[0]['name'])
-            if mfound:
-                for t in range(s, e, 60000):
-                    for i in range(0,1439):
-                        x1=row[0]['data'][:][i][-1]
-                        if t == row[0]['data'][:][i][0]:
-                            if sign == '*': # sign * 0 (number) == 0
-                                nuvalue=max(0,int(x1*number))
-                                row[0]['data'][:][i][-1]=nuvalue
-                            elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
-                                if number == 0:
-                                    row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
+            for row in data:
+                mfound=re.fullmatch(model, row[0]['name'])
+                if mfound:
+                    for t in range(start, end, 60000):
+                        for i in range(0,1439):
+                            x1=row[0]['data'][:][i][-1]
+                            if t == row[0]['data'][:][i][0]:
+                                if sign == '*': # sign * 0 (number) == 0
+                                    nuvalue=max(0,int(x1*number))
+                                    row[0]['data'][:][i][-1]=nuvalue
+                                elif sign == '-': # double meaning if number is 0 or empty, should both result in zero? FAFJ
+                                    if number == 0:
+                                        row[0]['data'][:][i][-1]=0 # sets value to zero since x1-0 makes no sense
+                                    else:
+                                        nuvalue=max(0,int(x1-number))
+                                        row[0]['data'][:][i][-1]=nuvalue
+                                elif sign == '/':
+                                        nuvalue=max(0,int(x1/number))
+                                        row[0]['data'][:][i][-1]=nuvalue
+                                elif sign == '+':
+                                        nuvalue=max(0,int(x1+number))
+                                        row[0]['data'][:][i][-1]=nuvalue
                                 else:
-                                    nuvalue=max(0,int(x1-number))
-                                    row[0]['data'][:][i][-1]=nuvalue
-                            elif sign == '/':
-                                    nuvalue=max(0,int(x1/number))
-                                    row[0]['data'][:][i][-1]=nuvalue
-                            elif sign == '+':
-                                    nuvalue=max(0,int(x1+number))
-                                    row[0]['data'][:][i][-1]=nuvalue
-                            else:
-                                    err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                                        err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
     else:
         for row in data:
             mfound=re.fullmatch(model, row[0]['name'])
