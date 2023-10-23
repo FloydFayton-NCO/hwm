@@ -5,7 +5,7 @@ __credits__ = ["Floyd Fayton"]
 __version__ = "1.0.0"
 __maintainer__ = "Floyd Fayton"
 __email__ = "floyd.fayton@noaa.gov"
-__status__ = "test"
+__status__ = "para"
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 import sys
 import json
