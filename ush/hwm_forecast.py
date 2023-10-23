@@ -30,13 +30,16 @@ def new_value(data,model,sign,number,times):  #generates new values by time
         epoch=datetime.utcfromtimestamp(epoch_zero)
         epoch=epoch.strftime("%Y%m%d")
         for _,ranget in enumerate(split):
-            ranget=ranget.split(sep="-") #rm dash, split numbers into list elements
+            ranget=ranget.split(sep="-") #rm dash, split list elements
             ymdhm_s="".join([epoch,ranget[0]])
             ymdhm_e="".join([epoch,ranget[1]])
             start=datetime.strptime(ymdhm_s,"%Y%m%d%H%M")
             end=datetime.strptime(ymdhm_e, "%Y%m%d%H%M")
+
+            """.utc is critical for start/end"""
             start=int(start.replace(tzinfo=timezone.utc).timestamp() * 1000)
             end=int(end.replace(tzinfo=timezone.utc).timestamp() * 1000)
+            
             tarr.append(ranget)
             for row in data:
                 mfound=re.fullmatch(model, row[0]['name'])
@@ -85,7 +88,8 @@ def new_value(data,model,sign,number,times):  #generates new values by time
                         nuvalue=max(0,int(x1+number))
                         row[0]['data'][:][i][-1]=nuvalue
                     else:
-                        err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                        err_exit('operand not detected, \
+                            please fix $PARMhwm/fcst_ctrl file')
 
 def hwm_modify(jsonfile,ctrl,nufile):
     """Main script to start modification of existing file"""
