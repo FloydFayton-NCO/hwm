@@ -14,6 +14,11 @@ from datetime import datetime, timezone
 import os
 import pandas as pd
 
+def err_exit(msg):
+    """Leaving this script hastily"""
+    print(msg, file=sys.stderr)
+    sys.exit(1)
+
 def mathing(sign, number, row, x1, i):
     """Math by sign"""
     if sign == "*":  # sign * 0 (number) == 0
@@ -36,11 +41,6 @@ def mathing(sign, number, row, x1, i):
             "operand not detected, \
             please fix $PARMhwm/fcst_ctrl file"
         )
-
-def err_exit(msg):
-    """Leaving this script hastily"""
-    print(msg, file=sys.stderr)
-    sys.exit(1)
 
 def new_value(data, model, sign, number, times):  # generates new values by time
     """Generating new values by time values, or entire chart"""
