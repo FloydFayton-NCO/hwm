@@ -7,13 +7,11 @@ __maintainer__ = "Floyd Fayton"
 __email__ = "floyd.fayton@noaa.gov"
 __status__ = "test"
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-import readline
 import sys
 import json
 import re
 from datetime import datetime, timezone
 import os
-import numpy as np
 import pandas as pd
 
 datetime.now(timezone.utc) 
