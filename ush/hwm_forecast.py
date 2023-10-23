@@ -27,7 +27,7 @@ def new_value(data,model,sign,number,times):
         epoch_zero=int(data[0][:][0]['data'][0][0]/1000)
         epoch=datetime.utcfromtimestamp(epoch_zero)
         epoch=epoch.strftime("%Y%m%d")
-        for idx,ranget in enumerate(split):
+        for _,ranget in enumerate(split):
             ranget=ranget.split(sep="-") #rm dash, split numbers into list elements
             ymdhm_s="".join([epoch,ranget[0]])
             ymdhm_e="".join([epoch,ranget[1]])
@@ -53,13 +53,13 @@ def new_value(data,model,sign,number,times):
                                         nuvalue=max(0,int(x1-number))
                                         row[0]['data'][:][i][-1]=nuvalue
                                 elif sign == '/':
-                                        nuvalue=max(0,int(x1/number))
-                                        row[0]['data'][:][i][-1]=nuvalue
+                                    nuvalue=max(0,int(x1/number))
+                                    row[0]['data'][:][i][-1]=nuvalue
                                 elif sign == '+':
-                                        nuvalue=max(0,int(x1+number))
-                                        row[0]['data'][:][i][-1]=nuvalue
+                                    nuvalue=max(0,int(x1+number))
+                                    row[0]['data'][:][i][-1]=nuvalue
                                 else:
-                                        err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
+                                    err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
     else:
         for row in data:
             mfound=re.fullmatch(model, row[0]['name'])
@@ -85,16 +85,16 @@ def new_value(data,model,sign,number,times):
                         err_exit('operand not detected, please fix $PARMhwm/fcst_ctrl file')
 
 def hwm_modify(jsonfile,ctrl,nufile):
-    with open(ctrl,'r') as cfile:
+    with open(ctrl,'r',encoding="utf-8") as cfile:
         jsonctrl = pd.read_csv(cfile,sep=" ",comment="#",header=None,skip_blank_lines=True,names=['sign','model','number','times'])
         jsonctrl = jsonctrl.fillna("0") # no NaNs or empty fields, last two fields in control have to be integers
 
-    with open(jsonfile,'r') as jfile:
+    with open(jsonfile,'r',encoding="utf-8") as jfile:
         data = json.load(jfile)
         data_str = re.sub(r'[\[\]]', '', str(data)) #super step for searching, object --> string
 
     #Create new models
-    for idx, cow in jsonctrl.iterrows():
+    for _, cow in jsonctrl.iterrows():
         sign=cow['sign']
         model=cow['model']
         modelfound=re.findall("\'"+model+"\'", data_str)
@@ -103,11 +103,11 @@ def hwm_modify(jsonfile,ctrl,nufile):
 
         if not modelfound:
             xbegin=data[0][:][0]['data'][0][0]
-            modelDat=[]
-            for i in range(0,1439):
-                modelDat.append([xbegin,0])
+            modeldata=[]
+            for _ in range(0,1439):
+                modeldata.append([xbegin,0])
                 xbegin+= 60000
-            newmodel = json.dumps([{"name":model,"data":modelDat}],indent=4,sort_keys=False)
+            newmodel = json.dumps([{"name":model,"data":modeldata}],indent=4,sort_keys=False)
             poo=json.loads(newmodel)
             data.append(poo)
             data_str = re.sub(r'[\[\]]', '', str(data)) #reset vars with updated data
@@ -115,9 +115,9 @@ def hwm_modify(jsonfile,ctrl,nufile):
 
         new_value(data,model,sign,number,times)
 
-    with open(nufile,'w') as final:
+    with open(nufile,'w', encoding='utf-8') as final:
         final.write(json.dumps(data,indent=4,sort_keys=False))
-
+        
 ################ TESTING INPUTS ################
 infile = 'cactus_daily_nid_nodes_p1.json'
 ctrlfile = 'parm/fcst_ctrl'
@@ -129,7 +129,9 @@ outfile = 'hwm_fcst_nid_nodes_p1.json'
 # ctrlfile = os.environ["FCST_CTRL"]
 # outfile = "os.environ["DATA"] + '/' + os.environ["OJSON"]"
 ################################################
+
 hwm_modify(infile,ctrlfile,outfile)
+os.listdir(path='.')
 
 
 
