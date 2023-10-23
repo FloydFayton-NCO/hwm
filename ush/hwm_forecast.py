@@ -59,7 +59,7 @@ def new_value(data, model, sign, number, times):  # generates new values by time
             start = datetime.strptime(ymdhm_s, "%Y%m%d%H%M")
             end = datetime.strptime(ymdhm_e, "%Y%m%d%H%M")
 
-            """.utc is critical for start/end"""
+            #.utc is critical for start/end
             start = int(start.replace(tzinfo=timezone.utc).timestamp() * 1000)
             end = int(end.replace(tzinfo=timezone.utc).timestamp() * 1000)
             tarr.append(ranget)
