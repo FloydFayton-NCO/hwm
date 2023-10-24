@@ -124,17 +124,17 @@ def hwm_modify(jsonfile, ctrl, nufile):
     with open(nufile, "w", encoding="utf-8") as final:
         final.write(json.dumps(data, indent=4, sort_keys=False))
 
-################ TESTING INPUTS ################
-infile = "cactus_daily_nid_nodes_p1.json"
-ctrlfile = "parm/fcst_ctrl"
-outfile = "hwm_fcst_nid_nodes_p1.json"
-################################################
+# ################ TESTING INPUTS ################
+# infile = "cactus_daily_nid_nodes_p1.json"
+# ctrlfile = "parm/fcst_ctrl"
+# outfile = "hwm_fcst_nid_nodes_p1.json"
+# ################################################
 
-# ############### PRODUCTION INPUTS #############
-# infile = os.environ["IJSON"]
-# ctrlfile = os.environ["FCST_CTRL"]
-# outfile = os.environ["DATA"] + '/' + os.environ["OJSON"]
-# ###############################################
+############### PRODUCTION INPUTS #############
+infile = os.environ["IJSON"]
+ctrlfile = os.environ["FCST_CTRL"]
+outfile = os.environ["DATA"] + '/' + os.environ["OJSON"]
+###############################################
 
 hwm_modify(infile, ctrlfile, outfile)
 os.listdir(path=".")
