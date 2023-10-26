@@ -1,6 +1,6 @@
 # first/third col is np.multiply (*), np.divide (/), etc. - ordered for sorting, 
 # always delete decomissioned models before array modifications
-
++ STEVEN-T20 3000 0000-0600,1200-1800
 + AQM-OPS 3045
 / AQM-OPS 20 1230-1450,1800-1930,2000-2215
 + FLOYD-DEV 2000 1230-1450,1800-1930,2000-2215
@@ -8,3 +8,5 @@
 + GFS-OPS 29
 * GFS-OPS 29
 - HWRF-OPS 0
++ HWRF-OPS 1200 0000-0600,1200-1800
+/ HWRF-OPS 2 0000-0600,1200-1800

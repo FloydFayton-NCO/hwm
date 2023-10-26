@@ -112,7 +112,7 @@ def hwm_modify(jsonfile, ctrl, nufile):
                 modeldata.append([xbegin, 0])
                 xbegin += 60000
             newmodel = json.dumps(
-                [{"name": model, "data": modeldata}], indent=4, sort_keys=False
+                [{"data": modeldata,"name": model}], indent=4, sort_keys=False
             )
             poo = json.loads(newmodel)
             data.append(poo)
