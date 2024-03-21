@@ -44,16 +44,14 @@ export COMINnwgesy=${COMINnwgesy:-$COMINy/nwges_${res}_${rescount}}
 
 export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${model_ver}/${RUN}.${PDY})}
 export COMOUTy=${COMOUTy:-$(compath.py -o ${NET}/${model_ver}/${RUN}.${YPDY})}
-export COMOUTnwges=${COMOUTnwges:-$COMOUT/nwges_${res}_${rescount}}
-export COMOUTnwgesy=${COMOUTnwgesy:-$COMOUTy/nwges_${res}_${rescount}}
 export COMOUTproj=${COMOUTproj:-$(compath.py ${NET}/${model_ver}/project_files)}
 
 if [ ! -f $COMOUT ] ; then
-    mkdir -m 775 -p $COMOUT $COMOUTnwges $COMOUTproj
+    mkdir -m 775 -p $COMOUT $COMOUTproj
 fi
 
 if [ ! -f $COMOUTy ] ; then
-    mkdir -m 775 -p $COMOUTy $COMOUTnwgesy
+    mkdir -m 775 -p $COMOUTy
 fi
 
 # Control file determines which modifications are made by model
