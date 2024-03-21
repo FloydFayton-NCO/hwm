@@ -57,10 +57,10 @@ if [ ! -f $COMOUTy ] ; then
 fi
 
 # Control file determines which modifications are made by model
-export OJSON='${OJSON:-hwm_fcst_${res}_${rescount}_p1.json}'
-export FCST_CTRL='${FCST_CTRL:-${PARMhwm}/fcst_ctrl}'
-export live='${IJSON:-live_${res}_${rescount}_p1.json}'
-export daily='${DAILY:-daily_${res}_${rescount}_p1.json}'
+export OJSON=${OJSON:-hwm_fcst_${res}_${rescount}_p1.json}
+export FCST_CTRL=${FCST_CTRL:-${PARMhwm}/fcst_ctrl}
+export live=${IJSON:-live_${res}_${rescount}_p1.json}
+export daily=${DAILY:-daily_${res}_${rescount}_p1.json}
 
 ##############################################
 # Execute the script
