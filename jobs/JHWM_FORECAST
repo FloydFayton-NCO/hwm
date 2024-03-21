@@ -54,11 +54,16 @@ if [ ! -f $COMOUTy ] ; then
     mkdir -m 775 -p $COMOUTy
 fi
 
+############# FF - testing prod instead of para ###############
+export COMIN=${COMIN/para/prod}
+export COMINy=${COMINy/para/prod}
+############# FF - testing prod instead of para ###############
+
 # Control file determines which modifications are made by model
-export OJSON=${OJSON:-hwm_fcst_${res}_${rescount}_p1.json}
+export OJSON=${OJSON:-hwm_fcst${res}${rescount}_p1.json}
 export FCST_CTRL=${FCST_CTRL:-${PARMhwm}/fcst_ctrl}
-export live=${IJSON:-live_${res}_${rescount}_p1.json}
-export daily=${DAILY:-daily_${res}_${rescount}_p1.json}
+export live=${IJSON:-live${res}${rescount}_p1.json}
+export daily=${DAILY:-daily${res}${rescount}_p1.json}
 
 ##############################################
 # Execute the script

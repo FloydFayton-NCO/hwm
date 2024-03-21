@@ -31,6 +31,9 @@ export IJSON=%IJSON%
 export OJSON=%OJSON% 
 export DAILY=%DAILY% 
 
+#### FF - until forecast site is up ###
+export SENDWEB=NO
+
 ${HOMEhwm}/jobs/JHWM_FORECAST 
 
 %include <tail.h>
