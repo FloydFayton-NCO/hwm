@@ -18,7 +18,7 @@ elif [ -s "$COMIN/$live" ]; then
    IJSON=${IJSON:-${DATA}/${live}}
 elif [ -s "$COMINy/$daily" ]; then
    echo "final combined file $daily exists and is not empty, copying to $DATA"
-   cpreq $COMIN/${daily} $DATA/${daily}  
+   cpreq $COMINy/${daily} $DATA/${daily}  
    IJSON=${IJSON:-${DATA}/${daily}}
 else
    echo "final combined json file, live, daily, or custom, does not exist, and is not empty, not copying to $DATA"
