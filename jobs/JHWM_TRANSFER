@@ -103,10 +103,11 @@ elif [ "${SENDWEB}" = "YES" ] && [ "${envir}" = "para" ];then
     ${RSYNC} $COMIN/daily_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/daily/data
     export err=$?; err_chk
 
-    echo "transfer forecast HWM files to intra!!!!"
-    ${RSYNC} $COMIN/hwm_fcst_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/forecast/data
-    export err=$?; err_chk
-
+    if [ -f $COMIN/hwm_fcst_${res}_${rescount}_p1.json ]; then
+        echo "transfer forecast HWM files to intra!!!!"
+        ${RSYNC} $COMIN/hwm_fcst_${res}_${rescount}_p1.json ${SERVER}:${REMOTE_DIR}/forecast/data
+        export err=$?; err_chk
+    fi
 else
     echo "NO FILES BEING SENT TO INTRA WITH THIS RUN!!!!!!!!!!!!!"
 fi
